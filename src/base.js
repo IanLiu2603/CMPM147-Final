@@ -1,7 +1,7 @@
 let canvasContainer
 
 function setup() {
-    canvasContainer = $('#canvas-container')
+    //canvasContainer = $('#canvas-container');
 }
 
 function draw() {}
