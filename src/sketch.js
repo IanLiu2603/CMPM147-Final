@@ -1,7 +1,6 @@
-const FLOWER_TYPES = ['circle']
 let canvas
 let flowerList = []
-let growthRate
+let growthRate = 5
 
 function setup() {
     canvas = createCanvas(windowWidth, windowHeight)
@@ -10,12 +9,14 @@ function setup() {
 }
 
 function draw() {
-    background(220) // Simple gray background for testing
+    background(220)
     fill(0)
+
+    //draws a circle as placeholder for flower bud/ bloom
     for (let flower of flowerList) {
         if (flower.type === 'circle') {
-            circle(flower.x, flower.y, flower.size)
-            flower.size
+            flower.draw()
+            flower.grow(growthRate)
         }
     }
 }
@@ -23,12 +24,18 @@ function draw() {
 //generates a list of flowers and stores it in global
 function populateFlowerList() {
     flowerList = [
-        { type: 'circle', x: 50, y: 100, size: 20 },
-        { type: 'circle', x: 100, y: 100, size: 20 },
-        { type: 'circle', x: 150, y: 100, size: 20 },
-        { type: 'circle', x: 200, y: 100, size: 20 },
+        new Flower(250, 500),
+        new Flower(500, 500),
+        new Flower(750, 500),
+        new Flower(1000, 500),
     ]
 }
 
-//controls the growth of the flower buds (forward and backward)
-function flowerGrow(flowerAsset, growthRate) {}
+//"cuts" flower with click-> starts the growth process over
+function mousePressed() {
+    for (let flower of flowerList) {
+        if (flower.isClicked(mouseX, mouseY)) {
+            flower.hide() // or flower.x = -1000, etc.
+        }
+    }
+}
