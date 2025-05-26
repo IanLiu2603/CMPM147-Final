@@ -1,0 +1,20 @@
+ .media-buttons {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      display: flex;
+      gap: 5px;
+    }
+.media-buttons button {
+      width: 40px;
+      height: 40px;
+      background-color: transparent;
+      border: 0px solid #ccc;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 30px;
+    }
+
+.media-buttons button:hover {
+      background-color: #f0f0f0;
+    }
