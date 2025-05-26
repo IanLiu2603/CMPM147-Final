@@ -4,40 +4,40 @@
 //This is then used to draw growing flowers onto a canvas in sketch.js
 
 class Flower {
-    constructor(x, y, size = 20, type = "circle") {
-        this.x = x;
-        this.y = y;
-        this.size = size;
-        this.type = type;
-        this.health = 100;
-        this.total_growth = 0;
-        this.growth_rate = .3;
+    constructor(x, y, size = 20, type = 'circle') {
+        this.x = x
+        this.y = y
+        this.size = size
+        this.type = type
+        this.health = 100
+        this.total_growth = 0
+        this.growth_rate = 0.3
     }
 
     grow() {
         if (this.size <= 200) {
-            this.size += this.growth_rate;
+            this.size += this.growth_rate
         }
     }
 
     isClicked(mouseX, mouseY) {
-        const D = dist(mouseX, mouseY, this.x, this.y);
-        return D < this.size / 2;
+        const D = dist(mouseX, mouseY, this.x, this.y)
+        return D < this.size / 2
     }
 
     draw() {
         if (this.total_growth < 500) {
-            this.y -= 1;
-            this.total_growth += 1;
-            console.log(this.total_growth);
+            this.y -= 1
+            this.total_growth += 1
+            console.log(this.total_growth)
         }
-        if (this.size > 0 && this.type === "circle") {
-            fill(0);
-            circle(this.x, this.y, this.size);
+        if (this.size > 0 && this.type === 'circle') {
+            fill(0)
+            circle(this.x, this.y, this.size)
         }
     }
 
     hide() {
-        this.size = 0;
+        this.size = 0
     }
 }

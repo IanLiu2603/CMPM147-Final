@@ -1,22 +1,22 @@
-let canvas;
-let flowerList = [];
-let growthRate = 5;
+let canvas
+let flowerList = []
+let growthRate = 5
 
 function setup() {
-    canvas = createCanvas(windowWidth, windowHeight);
-    canvas.parent("canvas-container"); // Attach canvas to the correct div
-    populateFlowerList();
+    canvas = createCanvas(windowWidth, windowHeight)
+    canvas.parent('canvas-container') // Attach canvas to the correct div
+    populateFlowerList()
 }
 
 function draw() {
-    background(220);
-    fill(0);
+    background(220)
+    fill(0)
 
     //draws a circle as placeholder for flower bud/ bloom
     for (let flower of flowerList) {
-        if (flower.type === "circle") {
-            flower.draw();
-            flower.grow();
+        if (flower.type === 'circle') {
+            flower.draw()
+            flower.grow()
         }
     }
 }
@@ -28,14 +28,14 @@ function populateFlowerList() {
         new Flower(500, windowHeight),
         new Flower(750, windowHeight),
         new Flower(1000, windowHeight),
-    ];
+    ]
 }
 
 //"cuts" flower with click-> starts the growth process over
 function mousePressed() {
     for (let flower of flowerList) {
         if (flower.isClicked(mouseX, mouseY)) {
-            flower.hide(); // or flower.x = -1000, etc.
+            flower.hide() // or flower.x = -1000, etc.
         }
     }
 }
