@@ -88,3 +88,11 @@ function keyPressed() {
         console.log('Current time of day:', backgroundSystem.getTimeOfDay())
     }
 }
+
+function pause() {}
+
+function resume() {}
+
+function frameForward() {}
+
+function frameBack() {}
