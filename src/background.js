@@ -1,7 +1,7 @@
 // Background system for the digital garden
 class Background {
     constructor() {
-        this.timeOfDay = 0.5 // 0 = midnight, 0.5 = noon, 1 = midnight again
+        this.timeOfDay = 0 // 0 = midnight, 0.5 = noon, 1 = midnight again
         this.clouds = []
         this.stars = []
         this.initializeClouds()
