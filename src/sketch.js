@@ -14,13 +14,8 @@ function setup() {
 }
 
 function draw() {
-    // Draw the animated background instead of static color
-    // This will show sky gradient, sun/moon, clouds, stars, and ground
     backgroundSystem.draw()
-
-    // Update background time (automatic day/night cycle)
-    // You can comment this line to stop automatic time progression
-    backgroundSystem.updateTime(0.001) // Slow time progression for testing
+    backgroundSystem.updateTime(0.0001)
 
     fill(0)
 
