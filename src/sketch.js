@@ -1,6 +1,5 @@
 let canvas
 let flowerList = []
-let growthRate = 5
 let backgroundSystem
 
 function setup() {
@@ -44,10 +43,10 @@ function draw() {
 //generates a list of flowers and stores it in global
 function populateFlowerList() {
     flowerList = [
-        new Flower(250, windowHeight * 0.85, 0, 8),
-        new Flower(500, windowHeight * 0.85, 0, 6),
-        new Flower(750, windowHeight * 0.85, 0, 10),
-        new Flower(1000, windowHeight * 0.85, 0),
+        new Flower(250, windowHeight, 0, 8, [255, 0, 0]),
+        new Flower(500, windowHeight, 0, 6, [0, 255, 0]),
+        new Flower(750, windowHeight, 0, 9, [0, 0, 255]),
+        new Flower(1000, windowHeight, 0),
     ]
 }
 
