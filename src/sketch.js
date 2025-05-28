@@ -23,6 +23,7 @@ function draw() {
     for (let flower of flowerList) {
         if (flower.type === 'circle') {
             flower.draw()
+            flower.drawFlower()
             flower.grow()
         }
     }
@@ -43,10 +44,10 @@ function draw() {
 //generates a list of flowers and stores it in global
 function populateFlowerList() {
     flowerList = [
-        new Flower(250, windowHeight),
-        new Flower(500, windowHeight),
-        new Flower(750, windowHeight),
-        new Flower(1000, windowHeight),
+        new Flower(250, windowHeight, 0, 8),
+        new Flower(500, windowHeight, 0, 6),
+        new Flower(750, windowHeight, 0, 10),
+        new Flower(1000, windowHeight, 0),
     ]
 }
 
