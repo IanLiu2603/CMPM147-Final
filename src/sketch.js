@@ -1,6 +1,5 @@
 let canvas
 let flowerList = []
-let growthRate = 5
 let backgroundSystem
 
 function setup() {
@@ -15,7 +14,7 @@ function setup() {
 
 function draw() {
     backgroundSystem.draw()
-    backgroundSystem.updateTime(0.001)
+    backgroundSystem.updateTime(0.0001)
 
     fill(0)
 

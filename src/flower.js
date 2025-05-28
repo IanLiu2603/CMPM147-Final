@@ -1,7 +1,7 @@
 //Author: Jackie Sanchez
-//Date: 5/20/2025
-//flower class stores position, size and type of flower
-//This is then used to draw growing flowers onto a canvas in sketch.js
+//Date: 5/28/2025
+//flower class takes in parameters to dictate the position, flower type, petal number, health, color, health, and total growth.
+//These are used to draw a flower onto a canvas to show the flower "growing" in sketch.js
 
 class Flower {
     constructor(
@@ -46,6 +46,7 @@ class Flower {
     }
 
     //logic from Kazuki Umeda: https://github.com/Creativeguru97/YouTube_tutorial/tree/master/Play_with_geometry/3DMathFlowers
+    //uses polar coordinate system of the flowers origin (x,y) and then uses the sin and cos of this position to create flower's petal design.
     drawFlower() {
         if (this.total_growth < 250) {
             return
@@ -73,8 +74,7 @@ class Flower {
         }
 
         if (this.size < 50) {
-            this.size += 1
+            this.size += 0.01
         }
-        console.log(this.size)
     }
 }
