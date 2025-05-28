@@ -14,12 +14,15 @@ class Flower {
         this.total_growth = 0
         this.growth_rate = 1
         this.color = [0, 0, 0]
+        this.root = new Root(this.x, this.y, this.growth_rate)
     }
 
     grow() {
         if (this.total_growth <= 300) {
             this.total_growth += this.growth_rate
             console.log(this.total_growth)
+
+            this.root.grow()
         }
     }
 
@@ -32,7 +35,8 @@ class Flower {
         if (this.total_growth < 300) {
             this.y -= 1
             //console.log(this.total_growth);
-        } else return
+        }
+        this.root.draw()
     }
 
     hide() {
