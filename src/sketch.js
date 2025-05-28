@@ -1,6 +1,5 @@
 let canvas
 let flowerList = []
-let growthRate = 5
 let backgroundSystem
 
 function setup() {
@@ -14,13 +13,8 @@ function setup() {
 }
 
 function draw() {
-    // Draw the animated background instead of static color
-    // This will show sky gradient, sun/moon, clouds, stars, and ground
     backgroundSystem.draw()
-
-    // Update background time (automatic day/night cycle)
-    // You can comment this line to stop automatic time progression
-    backgroundSystem.updateTime(0.001) // Slow time progression for testing
+    backgroundSystem.updateTime(0.0001)
 
     fill(0)
 
@@ -28,6 +22,7 @@ function draw() {
     for (let flower of flowerList) {
         if (flower.type === 'circle') {
             flower.draw()
+            flower.drawFlower()
             flower.grow()
         }
     }
@@ -48,10 +43,10 @@ function draw() {
 //generates a list of flowers and stores it in global
 function populateFlowerList() {
     flowerList = [
-        new Flower(250, windowHeight),
-        new Flower(500, windowHeight),
-        new Flower(750, windowHeight),
-        new Flower(1000, windowHeight),
+        new Flower(250, windowHeight * 0.85, 0, 8, [255, 0, 0]),
+        new Flower(500, windowHeight * 0.85, 0, 6, [0, 255, 0]),
+        new Flower(750, windowHeight * 0.85, 0, 9, [0, 0, 255]),
+        new Flower(1000, windowHeight * 0.85, 0),
     ]
 }
 
