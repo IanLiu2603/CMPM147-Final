@@ -41,7 +41,7 @@ class Stem {
                         END_X,
                         END_Y,
                         this.growth_rate,
-                        this.height / 2,
+                        this.height,
                         NEW_ANGLE,
                         this.depth + 1
                     )
@@ -57,7 +57,7 @@ class Stem {
         const END_X = this.x + cos(this.angle) * this.length
         const END_Y = this.y - sin(this.angle) * this.length
         stroke(0, 255, 0)
-        strokeWeight(map(this.depth, 0, MAX_STEM, 5, 1))
+        strokeWeight(map(this.depth, 0, MAX_STEM, 5, 2))
         line(this.x, this.y, END_X, END_Y)
 
         for (let branch of this.branches) {

@@ -5,7 +5,6 @@
  * Starts from a point given by the flower class, it grows downwards then branches out at an angle until MAX_DEPTH is reached
  */
 
-
 // global variables
 const MAX_DEPTH = 5 // Maximum depth of the root system
 
