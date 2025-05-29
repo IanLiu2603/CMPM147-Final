@@ -119,10 +119,18 @@ function keyPressed() {
     }
 }
 
-function pause() {}
+window.pause = function() {
+    console.log("pause")
+}
 
-function resume() {}
+window.resume = function () {
+    console.log("resume")
+}
 
-function frameForward() {}
+window.fastforward = function () {
+    console.log("ff")
+}
 
-function frameBack() {}
+window.rewind = function () {
+    console.log("rewind")
+}
