@@ -102,7 +102,7 @@ function mousePressed() {
 function keyPressed() {
     if (key === 'd' || key === 'D') {
         // Set to day time (noon)
-        backgroundSystem.setTimeOfDay(0.5)
+        backgroundSystem.setTimeOfDay(0.7)
         console.log('Background set to day time')
     } else if (key === 'n' || key === 'N') {
         // Set to night time (midnight)
@@ -110,15 +110,11 @@ function keyPressed() {
         console.log('Background set to night time')
     } else if (key === 's' || key === 'S') {
         // Set to sunset
-        backgroundSystem.setTimeOfDay(0.75)
+        backgroundSystem.setTimeOfDay(0.9)
         console.log('Background set to sunset')
     } else if (key === 'r' || key === 'R') {
         // Set to sunrise
-        backgroundSystem.setTimeOfDay(0.25)
+        backgroundSystem.setTimeOfDay(0.4)
         console.log('Background set to sunrise')
-    } else if (key === ' ') {
-        // Spacebar: toggle automatic time progression
-        // This is a simple way to pause/resume the day/night cycle
-        console.log('Current time of day:', backgroundSystem.getTimeOfDay())
     }
 }
