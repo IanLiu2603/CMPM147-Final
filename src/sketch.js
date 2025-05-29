@@ -51,7 +51,10 @@ function populateFlowerList() {
     //     new Flower(1000, windowHeight * 0.85, 0),
     // ]
     flowerList = [
-        new Stem(250, windowHeight * 0.85, 1, windowHeight * 0.5)
+        new Stem(250, windowHeight * 0.85, 1, 100),
+        new Stem(500, windowHeight * 0.85, 1, 100),
+        new Stem(750, windowHeight * 0.85, 1, 100),
+        new Stem(1000, windowHeight * 0.85, 1, 100),
     ]
 }
 

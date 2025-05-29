@@ -6,7 +6,7 @@
  */
 
 // global variables
-const MAX_DEPTH = 5; // Maximum depth of the root system
+const MAX_DEPTH = 5 // Maximum depth of the root system
 
 class Root {
     constructor(x, y, growthRate = 1, angle = PI / 2, depth = 0) {
