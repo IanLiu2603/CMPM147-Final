@@ -1,6 +1,5 @@
 let canvas
 let flowerList = []
-let growthRate = 5
 let backgroundSystem
 
 function setup() {
@@ -21,6 +20,8 @@ function draw() {
 
     //draws a circle as placeholder for flower bud/ bloom
     for (let flower of flowerList) {
+        flower.draw()
+        flower.grow()
         if (flower.type === 'circle') {
             flower.draw()
             flower.drawFlower()
@@ -43,11 +44,48 @@ function draw() {
 
 //generates a list of flowers and stores it in global
 function populateFlowerList() {
+    //parameters: x,y, growthRate, Root angle, Root depth, height, stem angle, stem depth,
     flowerList = [
-        new Flower(250, windowHeight, 0, 8),
-        new Flower(500, windowHeight, 0, 6),
-        new Flower(750, windowHeight, 0, 10),
-        new Flower(1000, windowHeight, 0),
+        new Plant(
+            250,
+            windowHeight * 0.85,
+            1,
+            PI / 2,
+            3,
+            windowHeight * 0.21,
+            PI / 2,
+            1
+        ),
+        new Plant(
+            500,
+            windowHeight * 0.85,
+            1.5,
+            PI / 2,
+            1,
+            windowHeight * 0.2,
+            PI / 2,
+            2
+        ),
+        new Plant(
+            750,
+            windowHeight * 0.85,
+            1,
+            PI / 2,
+            2,
+            windowHeight * 0.3,
+            PI / 2,
+            1
+        ),
+        new Plant(
+            1000,
+            windowHeight * 0.85,
+            1.5,
+            PI / 2,
+            1,
+            windowHeight * 0.07,
+            PI / 2,
+            0
+        ),
     ]
 }
 
