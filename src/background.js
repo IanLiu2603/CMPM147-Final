@@ -6,6 +6,7 @@ class Background {
         this.stars = []
         this.initializeClouds()
         this.initializeStars()
+        this.paused = false
     }
 
     // Initialize cloud positions
@@ -34,9 +35,11 @@ class Background {
 
     // Update time of day (can be controlled by time control system)
     updateTime(deltaTime) {
-        this.timeOfDay += deltaTime
-        if (this.timeOfDay > 1) this.timeOfDay = 0
-        if (this.timeOfDay < 0) this.timeOfDay = 1
+        if (!paused) {
+            this.timeOfDay += deltaTime
+            if (this.timeOfDay > 1) this.timeOfDay = 0
+            if (this.timeOfDay < 0) this.timeOfDay = 1
+        }
     }
 
     // Draw the complete background
@@ -63,7 +66,11 @@ class Background {
             skyColor = nightColor
         } else if (this.timeOfDay < 0.4) {
             // Dawn transition
-            skyColor = lerpColor(nightColor, sunsetColor, (this.timeOfDay - 0.35) * 20)
+            skyColor = lerpColor(
+                nightColor,
+                sunsetColor,
+                (this.timeOfDay - 0.35) * 20
+            )
         } else if (this.timeOfDay < 0.5) {
             // Dawn to day
             skyColor = lerpColor(
@@ -129,7 +136,7 @@ class Background {
             let sunProgress = map(this.timeOfDay, 0.4, 1.0, 0, 1)
             let sunX = map(sunProgress, 0, 1, 50, width - 50) // From left to right
             let sunY = map(sin(sunProgress * PI), 0, 1, height * 0.85, 50) // Arc from horizon to sky
-            
+
             // Draw sun
             fill(255, 255, 0, sunAlpha)
             noStroke()
@@ -171,7 +178,7 @@ class Background {
             let moonProgress = map(this.timeOfDay, 0.0, 0.4, 0, 1)
             let moonX = map(moonProgress, 0, 1, 50, width - 50) // From left to right
             let moonY = map(sin(moonProgress * PI), 0, 1, height * 0.85, 50) // Arc from horizon to sky
-            
+
             // Draw moon
             fill(220, 220, 220, moonAlpha)
             noStroke()
@@ -192,9 +199,11 @@ class Background {
 
         for (let cloud of this.clouds) {
             // Move clouds
-            cloud.x += cloud.speed
-            if (cloud.x > width + cloud.size) {
-                cloud.x = -cloud.size
+            if (!paused) {
+                cloud.x += cloud.speed
+                if (cloud.x > width + cloud.size) {
+                    cloud.x = -cloud.size
+                }
             }
 
             // Draw cloud (multiple circles)
@@ -258,5 +267,11 @@ class Background {
     // Get current time of day
     getTimeOfDay() {
         return this.timeOfDay
+    }
+    pause() {
+        this.paused = true
+    }
+    resume() {
+        this.paused = false
     }
 }

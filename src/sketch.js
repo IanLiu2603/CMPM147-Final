@@ -1,6 +1,8 @@
 let canvas
 let flowerList = []
 let backgroundSystem
+let defaultTime = 0.0001
+let deltaTime = defaultTime
 
 function setup() {
     canvas = createCanvas(windowWidth, windowHeight)
@@ -14,14 +16,16 @@ function setup() {
 
 function draw() {
     backgroundSystem.draw()
-    backgroundSystem.updateTime(0.0001)
+    backgroundSystem.updateTime(deltaTime)
 
     fill(0)
 
     //draws a circle as placeholder for flower bud/ bloom
     for (let flower of flowerList) {
         flower.draw()
-        flower.grow()
+        if (!paused) {
+            flower.grow()
+        }
         if (flower.type === 'circle') {
             flower.draw()
             flower.drawFlower()
@@ -119,18 +123,33 @@ function keyPressed() {
     }
 }
 
-window.pause = function() {
-    console.log("pause")
+//Controls the plant
+let paused = false
+
+//Function should stop background movement, flower growth, and stem progression
+
+window.pause = function () {
+    //Background
+    console.log('pausing')
+    backgroundSystem.pause()
+
+    //Plant
+    paused = true
 }
 
 window.resume = function () {
-    console.log("resume")
+    console.log('resume')
+    //Background
+    backgroundSystem.resume()
+
+    //Plant
+    paused = false
 }
 
 window.fastforward = function () {
-    console.log("ff")
+    console.log('ff')
 }
 
 window.rewind = function () {
-    console.log("rewind")
+    console.log('rewind')
 }
