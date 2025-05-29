@@ -20,6 +20,8 @@ function draw() {
 
     //draws a circle as placeholder for flower bud/ bloom
     for (let flower of flowerList) {
+        flower.draw()
+        flower.growStem()
         if (flower.type === 'circle') {
             flower.draw()
             flower.drawFlower()
@@ -42,11 +44,17 @@ function draw() {
 
 //generates a list of flowers and stores it in global
 function populateFlowerList() {
+    // flowerList = [
+    //     new Flower(250, windowHeight * 0.85, 0, 8, [255, 0, 0]),
+    //     new Flower(500, windowHeight * 0.85, 0, 6, [0, 255, 0]),
+    //     new Flower(750, windowHeight * 0.85, 0, 9, [0, 0, 255]),
+    //     new Flower(1000, windowHeight * 0.85, 0),
+    // ]
     flowerList = [
-        new Flower(250, windowHeight * 0.85, 0, 8, [255, 0, 0]),
-        new Flower(500, windowHeight * 0.85, 0, 6, [0, 255, 0]),
-        new Flower(750, windowHeight * 0.85, 0, 9, [0, 0, 255]),
-        new Flower(1000, windowHeight * 0.85, 0),
+        new Stem(250, windowHeight * 0.85, 1, 100),
+        new Stem(500, windowHeight * 0.85, 1, 100),
+        new Stem(750, windowHeight * 0.85, 1, 100),
+        new Stem(1000, windowHeight * 0.85, 1, 100),
     ]
 }
 

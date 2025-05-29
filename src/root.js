@@ -5,9 +5,9 @@
  * Starts from a point given by the flower class, it grows downwards then branches out at an angle until MAX_DEPTH is reached
  */
 
-// Global constants for settings/tweaks
-// const MAX_DEPTH = 5 // number of iterations before root stops branching
-// const ANGLE = PI / 4 // angle of branching from -ANGLE to ANGLE for new branches
+
+// global variables
+const MAX_DEPTH = 5 // Maximum depth of the root system
 
 class Root {
     constructor(x, y, growthRate = 1, angle = PI / 2, depth = 0) {
@@ -19,13 +19,13 @@ class Root {
         this.depth = depth
         this.hasBranched = false
         this.branches = []
-        this.maxLength = depth <= 2 ? random(5, 10) : random(20, 30)
+        this.maxLength = depth <= 1 ? random(5, 10) : random(20, 40)
     }
 
     grow() {
         if (this.length < this.maxLength) {
-            this.length += 0.5 * this.growth_rate
-        } else if (!this.hasBranched && this.depth < 5) {
+            this.length += 1 * this.growth_rate
+        } else if (!this.hasBranched && this.depth < MAX_DEPTH) {
             this.hasBranched = true
             const NUM_BRANCHES = floor(random(2, 5))
             const END_X = this.x + cos(this.angle) * this.length
@@ -53,7 +53,7 @@ class Root {
         const END_X = this.x + cos(this.angle) * this.length
         const END_Y = this.y + sin(this.angle) * this.length
         stroke(80, 50, 20)
-        strokeWeight(map(4 - this.depth, 0, 4, 0.5, 2))
+        strokeWeight(map(MAX_DEPTH - this.depth, 0, 4, 0.5, 2))
         line(this.x, this.y, END_X, END_Y)
 
         for (let branch of this.branches) {

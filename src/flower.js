@@ -27,7 +27,8 @@ class Flower {
     grow() {
         if (this.total_growth <= 300) {
             this.total_growth += this.growth_rate
-            console.log(this.total_growth)
+            this.y -= 1 * this.growth_rate
+            // console.log(this.total_growth)
 
             this.root.grow()
         }
@@ -40,7 +41,7 @@ class Flower {
 
     draw() {
         if (this.total_growth < 300) {
-            this.y -= 1
+            //this.y -= 1
             //console.log(this.total_growth);
         }
         this.root.draw()
