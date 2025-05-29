@@ -1,7 +1,7 @@
 //Author: Jackie Sanchez
 //Date: 5/28/2025
 //flower class takes in parameters to dictate the position, flower type, petal number, health, color, health, and total growth.
-//These are used to draw a flower onto a canvas to show the flower "growing" in sketch.js
+//These are used to draw a flower at the end of the stems produced in plant.js
 
 class Flower {
     constructor(
@@ -20,14 +20,15 @@ class Flower {
         this.health = 100
         this.total_growth = 0
         this.growth_rate = 1
-        this.color = [0, 0, 0]
+        this.color = color
         this.root = new Root(this.x, this.y, this.growth_rate)
     }
 
     grow() {
         if (this.total_growth <= 300) {
             this.total_growth += this.growth_rate
-            console.log(this.total_growth)
+            this.y -= 1 * this.growth_rate
+            // console.log(this.total_growth)
 
             this.root.grow()
         }
@@ -40,7 +41,7 @@ class Flower {
 
     draw() {
         if (this.total_growth < 300) {
-            this.y -= 1
+            //this.y -= 1
             //console.log(this.total_growth);
         }
         this.root.draw()

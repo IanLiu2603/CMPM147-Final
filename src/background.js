@@ -42,7 +42,8 @@ class Background {
     // Draw the complete background
     draw() {
         this.drawSky()
-        this.drawCelestialBodies()
+        this.drawSun()
+        this.drawMoon()
         this.drawClouds()
         this.drawStars()
         this.drawGround()
@@ -57,32 +58,35 @@ class Background {
 
         let skyColor
 
-        if (this.timeOfDay < 0.2) {
-            // Night to dawn
-            skyColor = lerpColor(nightColor, sunsetColor, this.timeOfDay * 5)
-        } else if (this.timeOfDay < 0.3) {
+        if (this.timeOfDay < 0.35) {
+            // Night time
+            skyColor = nightColor
+        } else if (this.timeOfDay < 0.4) {
+            // Dawn transition
+            skyColor = lerpColor(nightColor, sunsetColor, (this.timeOfDay - 0.35) * 20)
+        } else if (this.timeOfDay < 0.5) {
             // Dawn to day
             skyColor = lerpColor(
                 sunsetColor,
                 dayColor,
-                (this.timeOfDay - 0.2) * 10
+                (this.timeOfDay - 0.4) * 10
             )
-        } else if (this.timeOfDay < 0.7) {
-            // Day
+        } else if (this.timeOfDay < 0.9) {
+            // Day time
             skyColor = dayColor
-        } else if (this.timeOfDay < 0.8) {
+        } else if (this.timeOfDay < 0.95) {
             // Day to sunset
             skyColor = lerpColor(
                 dayColor,
                 sunsetColor,
-                (this.timeOfDay - 0.7) * 10
+                (this.timeOfDay - 0.9) * 20
             )
         } else {
             // Sunset to night
             skyColor = lerpColor(
                 sunsetColor,
                 nightColor,
-                (this.timeOfDay - 0.8) * 5
+                (this.timeOfDay - 0.95) * 20
             )
         }
 
@@ -103,39 +107,81 @@ class Background {
         }
     }
 
-    // Draw sun or moon based on time of day
-    drawCelestialBodies() {
-        let celestialX = map(this.timeOfDay, 0, 1, -100, width + 100)
-        let celestialY = map(sin(this.timeOfDay * PI), 0, 1, height * 0.8, 50)
+    // Draw sun
+    drawSun() {
+        // Sun is visible during day time (0.4 to 1.0)
+        let sunAlpha = 0
+        if (this.timeOfDay >= 0.4) {
+            if (this.timeOfDay < 0.45) {
+                // Dawn - sun fading in
+                sunAlpha = map(this.timeOfDay, 0.4, 0.45, 0, 200)
+            } else if (this.timeOfDay > 0.95) {
+                // Dusk - sun fading out
+                sunAlpha = map(this.timeOfDay, 0.95, 1.0, 200, 0)
+            } else {
+                // Full day
+                sunAlpha = 200
+            }
+        }
 
-        if (this.timeOfDay > 0.2 && this.timeOfDay < 0.8) {
+        if (sunAlpha > 0) {
+            // Calculate sun position based on its visible time (0.4 to 1.0)
+            let sunProgress = map(this.timeOfDay, 0.4, 1.0, 0, 1)
+            let sunX = map(sunProgress, 0, 1, 50, width - 50) // From left to right
+            let sunY = map(sin(sunProgress * PI), 0, 1, height * 0.85, 50) // Arc from horizon to sky
+            
             // Draw sun
-            fill(255, 255, 0, 200)
+            fill(255, 255, 0, sunAlpha)
             noStroke()
-            ellipse(celestialX, celestialY, 80, 80)
+            ellipse(sunX, sunY, 80, 80)
 
             // Sun rays
-            stroke(255, 255, 0, 100)
+            stroke(255, 255, 0, sunAlpha * 0.5)
             strokeWeight(2)
             for (let i = 0; i < 8; i++) {
                 let angle = (i * PI) / 4
-                let x1 = celestialX + cos(angle) * 50
-                let y1 = celestialY + sin(angle) * 50
-                let x2 = celestialX + cos(angle) * 70
-                let y2 = celestialY + sin(angle) * 70
+                let x1 = sunX + cos(angle) * 50
+                let y1 = sunY + sin(angle) * 50
+                let x2 = sunX + cos(angle) * 70
+                let y2 = sunY + sin(angle) * 70
                 line(x1, y1, x2, y2)
             }
-        } else {
+        }
+    }
+
+    // Draw moon
+    drawMoon() {
+        // Moon is visible during night time (0.0 to 0.4)
+        let moonAlpha = 0
+        if (this.timeOfDay <= 0.4) {
+            if (this.timeOfDay < 0.05) {
+                // Early night - moon fading in
+                moonAlpha = map(this.timeOfDay, 0.0, 0.05, 0, 180)
+            } else if (this.timeOfDay > 0.35) {
+                // Pre-dawn - moon fading out
+                moonAlpha = map(this.timeOfDay, 0.35, 0.4, 180, 0)
+            } else {
+                // Deep night - full visibility
+                moonAlpha = 180
+            }
+        }
+
+        if (moonAlpha > 0) {
+            // Calculate moon position based on its visible time (0.0 to 0.4)
+            let moonProgress = map(this.timeOfDay, 0.0, 0.4, 0, 1)
+            let moonX = map(moonProgress, 0, 1, 50, width - 50) // From left to right
+            let moonY = map(sin(moonProgress * PI), 0, 1, height * 0.85, 50) // Arc from horizon to sky
+            
             // Draw moon
-            fill(220, 220, 220, 180)
+            fill(220, 220, 220, moonAlpha)
             noStroke()
-            ellipse(celestialX, celestialY, 60, 60)
+            ellipse(moonX, moonY, 60, 60)
 
             // Moon craters
-            fill(200, 200, 200, 100)
-            ellipse(celestialX - 10, celestialY - 5, 8, 8)
-            ellipse(celestialX + 8, celestialY + 8, 6, 6)
-            ellipse(celestialX - 5, celestialY + 12, 4, 4)
+            fill(200, 200, 200, moonAlpha * 0.6)
+            ellipse(moonX - 10, moonY - 5, 8, 8)
+            ellipse(moonX + 8, moonY + 8, 6, 6)
+            ellipse(moonX - 5, moonY + 12, 4, 4)
         }
     }
 
@@ -182,7 +228,7 @@ class Background {
 
     // Draw twinkling stars (only visible at night)
     drawStars() {
-        if (this.timeOfDay < 0.2 || this.timeOfDay > 0.8) {
+        if (this.timeOfDay <= 0.4) {
             noStroke()
 
             for (let star of this.stars) {
