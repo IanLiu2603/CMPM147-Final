@@ -9,12 +9,12 @@ const MAX_STEM = 2
 
 class Stem {
     constructor(x, y, growthRate, height, angle = PI / 2, depth = 0) {
-        ;(this.x = x),
-            (this.y = y),
-            (this.growth_rate = growthRate),
-            (this.angle = angle)
+        this.x = x
+        this.y = y
+        this.growth_rate = growthRate
+        this.angle = angle
         this.depth = depth
-        this.hadBranched = false
+        this.hasBranched = false
         this.branches = []
         this.length = 0
         this.height = height
@@ -24,12 +24,11 @@ class Stem {
                 : random(this.height * 0.25, this.height * 0.5) //(longer stem to smaller stems)
     }
 
-    growStem() {
+    grow() {
         if (this.length < this.maxLength) {
             this.length += 1 * this.growth_rate
-            console.log(this.length)
         } else if (!this.hasBranched && this.depth < MAX_STEM) {
-            console.log('else if')
+            console.log('I am branching')
             this.hasBranched = true
             const NUM_BRANCHES = floor(random(2, 5))
             const END_X = this.x + cos(this.angle) * this.length
@@ -49,7 +48,7 @@ class Stem {
             }
         }
         for (let branch of this.branches) {
-            branch.growStem()
+            branch.grow()
         }
     }
 
