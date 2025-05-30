@@ -136,7 +136,6 @@ function populateFlowerList() {
 function mousePressed() {
     // start background music on first click
     //startBackgroundMusic()
-
     // for (let flower of flowerList) {
     //     //if (flower.isClicked(mouseX, mouseY)) {
     //     //    flower.hide() // or flower.x = -1000, etc.

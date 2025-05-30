@@ -8,7 +8,17 @@
 const MAX_STEM = 2
 
 class Stem {
-    constructor(x, y, growthRate, height, flowerColor, numPetals, flowerSize, angle = PI / 2, depth = 0) {
+    constructor(
+        x,
+        y,
+        growthRate,
+        height,
+        flowerColor,
+        numPetals,
+        flowerSize,
+        angle = PI / 2,
+        depth = 0
+    ) {
         this.x = x
         this.y = y
         this.growth_rate = growthRate
@@ -22,7 +32,13 @@ class Stem {
         this.num_petals = numPetals
         this.flower_size = flowerSize
         if (this.depth === MAX_STEM) {
-            this.flower = new Flower(x, y, this.flower_size, this.num_petals, this.flower_color)
+            this.flower = new Flower(
+                x,
+                y,
+                this.flower_size,
+                this.num_petals,
+                this.flower_color
+            )
         } else {
             this.flower = null
         }
@@ -59,7 +75,7 @@ class Stem {
             }
         }
         for (let branch of this.branches) {
-                branch.grow()
+            branch.grow()
         }
     }
 
