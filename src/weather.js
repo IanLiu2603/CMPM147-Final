@@ -3,7 +3,7 @@
 //This file is used to create a class for rain and snow.
 //These are used to draw a background with a day/night cycle, clouds, stars, and a ground
 
-// Reference: 
+// Reference:
 // https://editor.p5js.org/monicawen/sketches/HkU-BCJqm
 // https://editor.p5js.org/son/sketches/ry8-HnOAQ
 // get thunder sound play way from ChatGPT
@@ -21,7 +21,7 @@ class Rain {
         this.thunderSound2 = thunder2
         this.thunderSound1.setVolume(0.1)
         this.thunderSound2.setVolume(0.1)
-        
+
         this.rainSound = rainSound
         this.rainSound.setVolume(0.03)
         this.rainSound.setLoop(true)
@@ -61,7 +61,7 @@ class Rain {
         for (let i = this.splashes.length - 1; i >= 0; i--) {
             let splash = this.splashes[i]
             splash.age++
-            
+
             // update splash particles
             for (let particle of splash.particles) {
                 particle.x += particle.vx
@@ -82,9 +82,9 @@ class Rain {
             x: x,
             y: y,
             age: 0,
-            particles: []
+            particles: [],
         }
-        
+
         // create splash particles
         for (let i = 0; i < 6; i++) {
             splash.particles.push({
@@ -93,10 +93,10 @@ class Rain {
                 vx: random(-2, 2),
                 vy: random(-3, -1),
                 opacity: 255,
-                size: random(2, 4)
+                size: random(2, 4),
             })
         }
-        
+
         this.splashes.push(splash)
     }
 
@@ -130,7 +130,12 @@ class Rain {
                 if (particle.opacity > 0) {
                     fill(150, 200, 255, particle.opacity)
                     noStroke()
-                    ellipse(particle.x, particle.y, particle.size, particle.size)
+                    ellipse(
+                        particle.x,
+                        particle.y,
+                        particle.size,
+                        particle.size
+                    )
                 }
             }
         }
@@ -148,7 +153,6 @@ class Rain {
             }
         }
     }
-    
 
     start() {
         this.isActive = true
@@ -166,7 +170,7 @@ class Snow {
         this.intensity = 100 // number of snowflakes
         this.isActive = false
         this.windStrength = 0.3
-        this.groundStayTime = 60 
+        this.groundStayTime = 60
         this.initializeSnowflakes()
     }
 
@@ -204,7 +208,13 @@ class Snow {
                 }
             } else {
                 flake.groundTimer++
-                flake.opacity = map(flake.groundTimer, 0, this.groundStayTime, 255, 50)
+                flake.opacity = map(
+                    flake.groundTimer,
+                    0,
+                    this.groundStayTime,
+                    255,
+                    50
+                )
                 // reset snowflake after staying on ground for specified time
                 if (flake.groundTimer >= this.groundStayTime) {
                     flake.y = random(-200, -50)
