@@ -22,6 +22,7 @@ function setup() {
     snowSystem = new Snow()
 
     populateFlowerList()
+    startBackgroundMusic()
 }
 
 // function to start background music
@@ -84,7 +85,10 @@ function populateFlowerList() {
             3,
             windowHeight * 0.21,
             PI / 2,
-            1
+            1,
+            [255, 0, 0],
+            4,
+            20
         ),
         new Plant(
             500,
@@ -94,7 +98,10 @@ function populateFlowerList() {
             1,
             windowHeight * 0.2,
             PI / 2,
-            2
+            2,
+            [255, 0, 0],
+            4,
+            20
         ),
         new Plant(
             750,
@@ -104,7 +111,10 @@ function populateFlowerList() {
             2,
             windowHeight * 0.3,
             PI / 2,
-            1
+            1,
+            [255, 0, 0],
+            4,
+            20
         ),
         new Plant(
             1000,
@@ -114,7 +124,10 @@ function populateFlowerList() {
             1,
             windowHeight * 0.07,
             PI / 2,
-            0
+            0,
+            [255, 0, 0],
+            4,
+            20
         ),
     ]
 }
@@ -122,19 +135,19 @@ function populateFlowerList() {
 //"cuts" flower with click-> starts the growth process over
 function mousePressed() {
     // start background music on first click
-    startBackgroundMusic()
+    //startBackgroundMusic()
 
-    for (let flower of flowerList) {
-        if (flower.isClicked(mouseX, mouseY)) {
-            flower.hide() // or flower.x = -1000, etc.
-        }
-    }
+    // for (let flower of flowerList) {
+    //     //if (flower.isClicked(mouseX, mouseY)) {
+    //     //    flower.hide() // or flower.x = -1000, etc.
+    //     //}
+    // }
 }
 
 // Add keyboard controls to test background system
 function keyPressed() {
     // start background music on first key press
-    startBackgroundMusic()
+    //startBackgroundMusic()
 
     if (key === 'd' || key === 'D') {
         // Set to day time (noon)
