@@ -10,6 +10,7 @@ let musicStarted = false // track if music has started
 
 function preload() {
     // music from https://soundcloud.com/royaltyfreemusic-nocopyrightmusic/sets/3-creative-commons-music
+    // https://editor.p5js.org/p5/sketches/Sound:_Load_and_Play_Sound
     bgMusic = loadSound('./src/asset/bg-music.wav')
 }
 

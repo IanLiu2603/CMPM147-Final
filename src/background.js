@@ -60,9 +60,9 @@ class Background {
     // Draw sky gradient based on time of day
     drawSky() {
         // Define colors for different times
-        let dayColor = color(135, 206, 235) // Sky blue
-        let sunsetColor = color(255, 165, 0) // Orange
-        let nightColor = color(25, 25, 112) // Midnight blue
+        let dayColor = color("#008DDA") // Sky blue
+        let sunsetColor = color("#FCB454") // Orange
+        let nightColor = color("#201658") // Midnight blue
 
         let skyColor
 
