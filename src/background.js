@@ -1,4 +1,8 @@
-// Background system for the digital garden
+//Author: Chengkun Li
+//Date: 5/28/2025
+//Background class takes in parameters to dictate the time of day, clouds, stars, and a ground.
+//These are used to draw a background with a day/night cycle, clouds, stars, and a ground
+
 class Background {
     constructor() {
         this.timeOfDay = 0 // 0 = midnight, 0.5 = noon, 1 = midnight again
@@ -47,8 +51,9 @@ class Background {
         this.drawSky()
         this.drawSun()
         this.drawMoon()
-        this.drawClouds()
         this.drawStars()
+        this.drawMountains()
+        this.drawClouds()
         this.drawGround()
     }
 
@@ -140,17 +145,17 @@ class Background {
             // Draw sun
             fill(255, 255, 0, sunAlpha)
             noStroke()
-            ellipse(sunX, sunY, 80, 80)
+            ellipse(sunX, sunY, 60, 60)
 
             // Sun rays
             stroke(255, 255, 0, sunAlpha * 0.5)
-            strokeWeight(2)
+            strokeWeight(10)
             for (let i = 0; i < 8; i++) {
                 let angle = (i * PI) / 4
-                let x1 = sunX + cos(angle) * 50
-                let y1 = sunY + sin(angle) * 50
-                let x2 = sunX + cos(angle) * 70
-                let y2 = sunY + sin(angle) * 70
+                let x1 = sunX + cos(angle) * 40
+                let y1 = sunY + sin(angle) * 40
+                let x2 = sunX + cos(angle) * 60
+                let y2 = sunY + sin(angle) * 60
                 line(x1, y1, x2, y2)
             }
         }
@@ -190,6 +195,28 @@ class Background {
             ellipse(moonX + 8, moonY + 8, 6, 6)
             ellipse(moonX - 5, moonY + 12, 4, 4)
         }
+    }
+
+    // Draw mountains
+    drawMountains() {
+        this.drawMountainLayer(0.3, color(60, 60, 80, 255), 0.8) // Far mountains
+        this.drawMountainLayer(0.4, color(80, 80, 100, 255), 0.6) // Mid mountains
+        this.drawMountainLayer(0.5, color(100, 100, 120, 255), 0.4) // Near mountains
+    }
+
+    // idea from Experiment 2
+    drawMountainLayer(baseHeight, mountainColor, noiseScale) {
+        fill(mountainColor)
+        noStroke()
+        beginShape()
+        vertex(0, height)
+        for (let x = 0; x <= width; x += 5) {
+            let noiseValue = noise(x * 0.01 * noiseScale)
+            let mountainHeight = height * baseHeight + noiseValue * height * 0.3
+            vertex(x, mountainHeight)
+        }
+        vertex(width, height)
+        endShape(CLOSE)
     }
 
     // Draw animated clouds
