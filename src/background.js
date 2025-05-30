@@ -60,9 +60,9 @@ class Background {
     // Draw sky gradient based on time of day
     drawSky() {
         // Define colors for different times
-        let dayColor = color(135, 206, 235) // Sky blue
-        let sunsetColor = color(255, 165, 0) // Orange
-        let nightColor = color(25, 25, 112) // Midnight blue
+        let dayColor = color('#008DDA') // Sky blue
+        let sunsetColor = color('#FCB454') // Orange
+        let nightColor = color('#201658') // Midnight blue
 
         let skyColor
 
@@ -262,26 +262,21 @@ class Background {
         }
     }
 
-    // Draw twinkling stars (only visible at night)
     drawStars() {
         if (this.timeOfDay <= 0.4) {
             noStroke()
-
             for (let star of this.stars) {
                 // Twinkling effect
                 star.brightness += sin(frameCount * star.twinkleSpeed) * 20
                 star.brightness = constrain(star.brightness, 100, 255)
-
                 fill(255, 255, 255, star.brightness)
                 ellipse(star.x, star.y, 2, 2)
             }
         }
     }
 
-    // Draw ground/grass
     drawGround() {
-        // Ground
-        fill(34, 139, 34) // Forest green
+        fill(34, 139, 34)
         noStroke()
         rect(0, height * 0.85, width, height * 0.15)
     }
