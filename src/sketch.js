@@ -7,11 +7,22 @@ let defaultTime = 0.0001
 let deltaTime = defaultTime
 let bgMusic
 let musicStarted = false // track if music has started
+let thunderSound1
+let thunderSound2
+let rainSound
 
 function preload() {
     // music from https://soundcloud.com/royaltyfreemusic-nocopyrightmusic/sets/3-creative-commons-music
     // https://editor.p5js.org/p5/sketches/Sound:_Load_and_Play_Sound
-    bgMusic = loadSound('./src/asset/bg-music.wav')
+    //bgMusic = loadSound('./src/asset/bg-music.wav')
+    // https://www.chosic.com/download-audio/27281/
+    bgMusic = loadSound('./src/asset/bg-music2.mp3')
+    // https://pixabay.com/sound-effects/thunder-rumble-313211/
+    thunderSound1 = loadSound('./src/asset/thunder1.mp3')
+    // https://pixabay.com/sound-effects/thunder-sound-45992/
+    thunderSound2 = loadSound('./src/asset/thunder2.mp3')
+    // https://pixabay.com/sound-effects/rain-sounds-ambience-351115/
+    rainSound = loadSound('./src/asset/rain-sounds.mp3')
 }
 
 function setup() {
@@ -19,9 +30,8 @@ function setup() {
     canvas.parent('canvas-container') // Attach canvas to the correct div
 
     backgroundSystem = new Background()
-    rainSystem = new Rain()
+    rainSystem = new Rain(thunderSound1, thunderSound2, rainSound)
     snowSystem = new Snow()
-
     populateFlowerList()
     startBackgroundMusic()
 }

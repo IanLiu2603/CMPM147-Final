@@ -262,26 +262,21 @@ class Background {
         }
     }
 
-    // Draw twinkling stars (only visible at night)
     drawStars() {
         if (this.timeOfDay <= 0.4) {
             noStroke()
-
             for (let star of this.stars) {
                 // Twinkling effect
                 star.brightness += sin(frameCount * star.twinkleSpeed) * 20
                 star.brightness = constrain(star.brightness, 100, 255)
-
                 fill(255, 255, 255, star.brightness)
                 ellipse(star.x, star.y, 2, 2)
             }
         }
     }
 
-    // Draw ground/grass
     drawGround() {
-        // Ground
-        fill(34, 139, 34) // Forest green
+        fill(34, 139, 34)
         noStroke()
         rect(0, height * 0.85, width, height * 0.15)
     }
