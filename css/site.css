@@ -24,6 +24,15 @@
     color: white;
 }
 
+/* https://www.w3schools.com/css/css_image_transparency.asp */
+.weather-btn {
+    opacity: 0.5;
+}
+
+.weather-btn.active {
+    opacity: 1;
+}
+
 body {
     margin: 0;
     padding: 0;

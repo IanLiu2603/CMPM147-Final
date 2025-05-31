@@ -23,7 +23,7 @@ class Rain {
         this.thunderSound2.setVolume(0.1)
 
         this.rainSound = rainSound
-        this.rainSound.setVolume(0.03)
+        this.rainSound.setVolume(0.01)
         this.rainSound.setLoop(true)
     }
 
@@ -37,7 +37,7 @@ class Rain {
                 length: random(10, 25),
                 opacity: random(150, 255),
                 wind: random(-this.windStrength, this.windStrength),
-                isEmoji: random() < 0.01, // 1% chance to be an emoji
+                isEmoji: random() < 0.02, // 1% chance to be an emoji
             })
         }
     }
@@ -114,7 +114,7 @@ class Rain {
             } else {
                 // draw normal raindrop
                 stroke(150, 150, 255, drop.opacity)
-                strokeWeight(1.5)
+                strokeWeight(2)
                 line(
                     drop.x,
                     drop.y,
@@ -123,7 +123,6 @@ class Rain {
                 )
             }
         }
-
         // draw splash effects
         for (let splash of this.splashes) {
             for (let particle of splash.particles) {
