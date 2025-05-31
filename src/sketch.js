@@ -6,7 +6,8 @@ let snowSystem
 let defaultTime = 0.0001
 let deltaTime = defaultTime
 let bgMusic
-let musicStarted = false // track if music has started
+let musicStarted = false
+let isMuted = false
 let thunderSound1
 let thunderSound2
 let rainSound
@@ -79,9 +80,12 @@ function draw() {
     strokeWeight(1)
     textSize(16)
     // from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toFixed
-    text(`Time of Day: ${backgroundSystem.getTimeOfDay().toFixed(3)}`, 10, 25)
-    text(`Press 'D' for day, 'N' for night, 'S' for sunset`, 10, 45)
-    text(`Weather: 'Q' for rain, 'W' for snow`, 10, 65)
+    text(`Time: ${backgroundSystem.getFormattedTime()}`, 10, 25)
+    text(
+        `Press 'D' for day, 'N' for night, 'S' for sunset, 'R' for sunrise`,
+        10,
+        45
+    )
 }
 
 //generates a list of flowers and stores it in global
@@ -161,7 +165,7 @@ function keyPressed() {
 
     if (key === 'd' || key === 'D') {
         // Set to day time (noon)
-        backgroundSystem.setTimeOfDay(0.7)
+        backgroundSystem.setTimeOfDay(12.0)
         console.log('Background set to day time')
     } else if (key === 'n' || key === 'N') {
         // Set to night time (midnight)
@@ -169,32 +173,12 @@ function keyPressed() {
         console.log('Background set to night time')
     } else if (key === 's' || key === 'S') {
         // Set to sunset
-        backgroundSystem.setTimeOfDay(0.9)
+        backgroundSystem.setTimeOfDay(18.0)
         console.log('Background set to sunset')
     } else if (key === 'r' || key === 'R') {
         // Set to sunrise
-        backgroundSystem.setTimeOfDay(0.4)
+        backgroundSystem.setTimeOfDay(6.0)
         console.log('Background set to sunrise')
-    } else if (key === 'q' || key === 'Q') {
-        // Toggle rain
-        if (rainSystem.isActive) {
-            rainSystem.stop()
-            console.log('Rain stopped')
-        } else {
-            snowSystem.stop() // Stop snow if active
-            rainSystem.start()
-            console.log('Rain started')
-        }
-    } else if (key === 'w' || key === 'W') {
-        // Toggle snow
-        if (snowSystem.isActive) {
-            snowSystem.stop()
-            console.log('Snow stopped')
-        } else {
-            rainSystem.stop() // Stop rain if active
-            snowSystem.start()
-            console.log('Snow started')
-        }
     }
 }
 
@@ -227,4 +211,70 @@ window.fastforward = function () {
 
 window.rewind = function () {
     console.log('rewind')
+}
+
+// from ChatGPT
+window.mute = function () {
+    const VOLUME_BTN = document.getElementById('volume-btn')
+    if (isMuted) {
+        if (bgMusic && musicStarted) {
+            bgMusic.setVolume(0.3)
+            rainSound.setVolume(0.01)
+            thunderSound1.setVolume(0.1)
+            thunderSound2.setVolume(0.1)
+        }
+        VOLUME_BTN.textContent = '🔈'
+        isMuted = false
+        console.log('Music unmuted')
+    } else {
+        if (bgMusic && musicStarted) {
+            bgMusic.setVolume(0)
+            rainSound.setVolume(0)
+            thunderSound1.setVolume(0)
+            thunderSound2.setVolume(0)
+        }
+        VOLUME_BTN.textContent = '🔇'
+        isMuted = true
+        console.log('Music muted')
+    }
+}
+
+window.Raining = function () {
+    const RAIN_BTN = document.getElementById('rain-btn')
+    const SNOW_BTN = document.getElementById('snow-btn')
+    if (rainSystem.isActive) {
+        // Stop rain
+        rainSystem.stop()
+        RAIN_BTN.classList.remove('active')
+        console.log('Rain stopped')
+    } else {
+        // Start rain and stop snow if active
+        if (snowSystem.isActive) {
+            snowSystem.stop()
+            SNOW_BTN.classList.remove('active')
+        }
+        rainSystem.start()
+        RAIN_BTN.classList.add('active')
+        console.log('Rain started')
+    }
+}
+
+window.Snowing = function () {
+    const SNOW_BTN = document.getElementById('snow-btn')
+    const RAIN_BTN = document.getElementById('rain-btn')
+    if (snowSystem.isActive) {
+        // Stop snow
+        snowSystem.stop()
+        SNOW_BTN.classList.remove('active')
+        console.log('Snow stopped')
+    } else {
+        // Start snow and stop rain if active
+        if (rainSystem.isActive) {
+            rainSystem.stop()
+            RAIN_BTN.classList.remove('active')
+        }
+        snowSystem.start()
+        SNOW_BTN.classList.add('active')
+        console.log('Snow started')
+    }
 }
