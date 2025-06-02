@@ -52,14 +52,12 @@ function setup() {
     rainSystem = new Rain(thunderSound1, thunderSound2, rainSound)
     snowSystem = new Snow()
     populateFlowerList()
+    startBackgroundMusic()
 }
 
 function draw() {
     backgroundSystem.draw()
     backgroundSystem.updateTime(deltaTime)
-    if (!musicStarted) {
-        startBackgroundMusic()
-    }
 
     fill(0)
 
@@ -192,7 +190,7 @@ function populateFlowerList() {
 //"cuts" flower with click-> starts the growth process over
 function mousePressed() {
     // start background music on first click
-    startBackgroundMusic()
+    //startBackgroundMusic()
     // for (let flower of flowerList) {
     //     //if (flower.isClicked(mouseX, mouseY)) {
     //     //    flower.hide() // or flower.x = -1000, etc.
@@ -236,6 +234,12 @@ window.pause = function () {
 
     //Plant
     paused = true
+
+    // Pause background music
+    if (bgMusic && musicStarted && bgMusic.isPlaying()) {
+        bgMusic.pause()
+        console.log('Background music paused')
+    }
 }
 
 window.resume = function () {
@@ -245,6 +249,12 @@ window.resume = function () {
 
     //Plant
     paused = false
+
+    // Resume background music
+    if (bgMusic && musicStarted && !bgMusic.isPlaying() && !isMuted) {
+        bgMusic.play()
+        console.log('Background music resumed')
+    }
 }
 
 window.fastforward = function () {
