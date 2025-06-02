@@ -4,8 +4,8 @@
 //These are used to draw a background with a day/night cycle, clouds, stars, and a ground
 
 // Reference:
-// https://editor.p5js.org/monicawen/sketches/HkU-BCJqm
-// https://editor.p5js.org/son/sketches/ry8-HnOAQ
+// rain and water splash effect by monicawen: https://editor.p5js.org/monicawen/sketches/HkU-BCJqm
+// rain and water splash effect by son: https://editor.p5js.org/son/sketches/ry8-HnOAQ
 // get thunder sound play way from ChatGPT
 // get water splash effect from ChatGPT
 class Rain {

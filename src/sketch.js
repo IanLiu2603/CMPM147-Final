@@ -11,6 +11,10 @@ let isMuted = false
 let thunderSound1
 let thunderSound2
 let rainSound
+let birdSound
+let nightBirdSound
+let lastBirdSoundTime = 0
+let birdSoundCooldown = 5000
 
 function preload() {
     // music from https://soundcloud.com/royaltyfreemusic-nocopyrightmusic/sets/3-creative-commons-music
@@ -24,6 +28,10 @@ function preload() {
     thunderSound2 = loadSound('./src/asset/thunder2.mp3')
     // https://pixabay.com/sound-effects/rain-sounds-ambience-351115/
     rainSound = loadSound('./src/asset/rain-sounds.mp3')
+    // https://pixabay.com/sound-effects/bird-327231/
+    birdSound = loadSound('./src/asset/bird.mp3')
+    // https://pixabay.com/sound-effects/perkutut-bird-of-java-337019/
+    nightBirdSound = loadSound('./src/asset/night-bird.mp3')
 }
 
 // function to start background music
@@ -44,14 +52,12 @@ function setup() {
     rainSystem = new Rain(thunderSound1, thunderSound2, rainSound)
     snowSystem = new Snow()
     populateFlowerList()
+    startBackgroundMusic()
 }
 
 function draw() {
     backgroundSystem.draw()
     backgroundSystem.updateTime(deltaTime)
-    if (!musicStarted) {
-        startBackgroundMusic()
-    }
 
     fill(0)
 
@@ -76,6 +82,10 @@ function draw() {
     rainSystem.draw()
     snowSystem.draw()
 
+    if (!paused && !isMuted && musicStarted) {
+        palyBirdSounds()
+    }
+
     // Display current time of day for testing (top-left corner)
     fill(255)
     stroke(0)
@@ -88,6 +98,34 @@ function draw() {
         10,
         45
     )
+}
+
+function palyBirdSounds() {
+    let currentTime = millis()
+    let timeOfDay = backgroundSystem.getTimeOfDay()
+    
+    // Check if enough time has passed since last bird sound
+    if (currentTime - lastBirdSoundTime > birdSoundCooldown) {
+        if (random() < 0.003) {
+            // Determine which bird sound to play based on time of day
+            if (timeOfDay >= 6.0 && timeOfDay < 18.0) {
+                if (birdSound && !birdSound.isPlaying()) {
+                    birdSound.setVolume(isMuted ? 0 : 0.15)
+                    birdSound.play()
+                    lastBirdSoundTime = currentTime
+                    console.log('Day bird sound played at time:', timeOfDay.toFixed(2))
+                }
+            } else {
+                // Nighttime (6 PM to 6 AM) - play night bird sound
+                if (nightBirdSound && !nightBirdSound.isPlaying()) {
+                    nightBirdSound.setVolume(isMuted ? 0 : 0.12)
+                    nightBirdSound.play()
+                    lastBirdSoundTime = currentTime
+                    console.log('Night bird sound played at time:', timeOfDay.toFixed(2))
+                }
+            }
+        }
+    }
 }
 
 //generates a list of flowers and stores it in global
@@ -152,7 +190,7 @@ function populateFlowerList() {
 //"cuts" flower with click-> starts the growth process over
 function mousePressed() {
     // start background music on first click
-    startBackgroundMusic()
+    //startBackgroundMusic()
     // for (let flower of flowerList) {
     //     //if (flower.isClicked(mouseX, mouseY)) {
     //     //    flower.hide() // or flower.x = -1000, etc.
@@ -196,6 +234,12 @@ window.pause = function () {
 
     //Plant
     paused = true
+
+    // Pause background music
+    if (bgMusic && musicStarted && bgMusic.isPlaying()) {
+        bgMusic.pause()
+        console.log('Background music paused')
+    }
 }
 
 window.resume = function () {
@@ -205,6 +249,12 @@ window.resume = function () {
 
     //Plant
     paused = false
+
+    // Resume background music
+    if (bgMusic && musicStarted && !bgMusic.isPlaying() && !isMuted) {
+        bgMusic.play()
+        console.log('Background music resumed')
+    }
 }
 
 window.fastforward = function () {
@@ -224,6 +274,8 @@ window.mute = function () {
             rainSound.setVolume(0.01)
             thunderSound1.setVolume(0.1)
             thunderSound2.setVolume(0.1)
+            birdSound.setVolume(0.1)
+            nightBirdSound.setVolume(0.15)
         }
         VOLUME_BTN.textContent = '🔈'
         isMuted = false
@@ -234,6 +286,8 @@ window.mute = function () {
             rainSound.setVolume(0)
             thunderSound1.setVolume(0)
             thunderSound2.setVolume(0)
+            birdSound.setVolume(0)
+            nightBirdSound.setVolume(0)
         }
         VOLUME_BTN.textContent = '🔇'
         isMuted = true

@@ -4,8 +4,9 @@
 //These are used to draw a background with a day/night cycle, clouds, stars, and a ground
 
 // Reference:
-// from Jackie Sanchez line 200 - 234: https://github.com/Jsanc189/cmpm147/blob/master/experiment2/js/sketch.js
-// from Starfield Screensaver's response: https://stackoverflow.com/questions/35460303/how-to-convert-decimal-hour-value-to-hhmmss
+// sun with rays by monicawen: https://editor.p5js.org/monicawen/sketches/HkU-BCJqm
+// cloud from Jackie Sanchez line 200 - 234: https://github.com/Jsanc189/cmpm147/blob/master/experiment2/js/sketch.js
+// time of day from Starfield Screensaver's response: https://stackoverflow.com/questions/35460303/how-to-convert-decimal-hour-value-to-hhmmss
 
 class Background {
     constructor() {
@@ -18,10 +19,10 @@ class Background {
     }
     // Initialize cloud positions
     initializeClouds() {
-        for (let i = 0; i < 50; i++) {
+        for (let i = 0; i < 100; i++) {
             let cloud = {
                 x: random(width),
-                y: random(50, 200),
+                y: random(50, 400),
                 size: random(20, 40),
                 speed: random(0.2, 0.8),
                 circle: [],
@@ -159,12 +160,15 @@ class Background {
             fill(255, 255, 0, sunAlpha)
             noStroke()
             ellipse(sunX, sunY, 60, 60)
-
+            
             // Sun rays
+            // sun with rays by monicawen: https://editor.p5js.org/monicawen/sketches/HkU-BCJqm
             stroke(255, 255, 0, sunAlpha * 0.5)
             strokeWeight(10)
+            let rotationAngle = radians(frameCount / 10)
+            
             for (let i = 0; i < 8; i++) {
-                let angle = (i * PI) / 4
+                let angle = (i * PI) / 4 + rotationAngle
                 let x1 = sunX + cos(angle) * 40
                 let y1 = sunY + sin(angle) * 40
                 let x2 = sunX + cos(angle) * 60
@@ -226,9 +230,9 @@ class Background {
 
     // Draw mountains
     drawMountains() {
-        this.drawMountainLayer(0.3, color(60, 60, 80, 255), 0.8) // Far mountains
-        this.drawMountainLayer(0.4, color(80, 80, 100, 255), 0.6) // Mid mountains
-        this.drawMountainLayer(0.5, color(100, 100, 120, 255), 0.4) // Near mountains
+        this.drawMountainLayer(0.4, color(60, 60, 80, 255), 0.8) // Far mountains
+        this.drawMountainLayer(0.5, color(80, 80, 100, 255), 0.6) // Mid mountains
+        this.drawMountainLayer(0.6, color(100, 100, 120, 255), 0.4) // Near mountains
     }
 
     // idea from Experiment 2
