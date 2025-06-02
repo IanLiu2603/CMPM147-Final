@@ -34,17 +34,6 @@ function preload() {
     nightBirdSound = loadSound('./src/asset/night-bird.mp3')
 }
 
-function setup() {
-    canvas = createCanvas(windowWidth, windowHeight)
-    canvas.parent('canvas-container') // Attach canvas to the correct div
-
-    backgroundSystem = new Background()
-    rainSystem = new Rain(thunderSound1, thunderSound2, rainSound)
-    snowSystem = new Snow()
-    populateFlowerList()
-    startBackgroundMusic()
-}
-
 // function to start background music
 function startBackgroundMusic() {
     if (bgMusic && !musicStarted) {
@@ -55,9 +44,22 @@ function startBackgroundMusic() {
     }
 }
 
+function setup() {
+    canvas = createCanvas(windowWidth, windowHeight)
+    canvas.parent('canvas-container') // Attach canvas to the correct div
+
+    backgroundSystem = new Background()
+    rainSystem = new Rain(thunderSound1, thunderSound2, rainSound)
+    snowSystem = new Snow()
+    populateFlowerList()
+}
+
 function draw() {
     backgroundSystem.draw()
     backgroundSystem.updateTime(deltaTime)
+    if (!musicStarted) {
+        startBackgroundMusic()
+    }
 
     fill(0)
 
@@ -190,7 +192,7 @@ function populateFlowerList() {
 //"cuts" flower with click-> starts the growth process over
 function mousePressed() {
     // start background music on first click
-    //startBackgroundMusic()
+    startBackgroundMusic()
     // for (let flower of flowerList) {
     //     //if (flower.isClicked(mouseX, mouseY)) {
     //     //    flower.hide() // or flower.x = -1000, etc.
