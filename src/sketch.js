@@ -208,6 +208,10 @@ function mousePressed() {
     // }
 }
 
+function mouseMoved() {
+    startBackgroundMusic()
+}
+
 // Add keyboard controls to test background system
 function keyPressed() {
     // start background music on first key press
