@@ -103,7 +103,11 @@ function draw() {
 function palyBirdSounds() {
     let currentTime = millis()
     let timeOfDay = backgroundSystem.getTimeOfDay()
-    
+    if (timeOfDay >= 0.0 && timeOfDay < 0.01) {
+        nightBirdSound.setVolume(0)
+        nightBirdSound.play()
+        console.log('Night bird sound played')
+    }
     // Check if enough time has passed since last bird sound
     if (currentTime - lastBirdSoundTime > birdSoundCooldown) {
         if (random() < 0.003) {
@@ -113,7 +117,10 @@ function palyBirdSounds() {
                     birdSound.setVolume(isMuted ? 0 : 0.15)
                     birdSound.play()
                     lastBirdSoundTime = currentTime
-                    console.log('Day bird sound played at time:', timeOfDay.toFixed(2))
+                    console.log(
+                        'Day bird sound played at time:',
+                        timeOfDay.toFixed(2)
+                    )
                 }
             } else {
                 // Nighttime (6 PM to 6 AM) - play night bird sound
@@ -121,7 +128,10 @@ function palyBirdSounds() {
                     nightBirdSound.setVolume(isMuted ? 0 : 0.12)
                     nightBirdSound.play()
                     lastBirdSoundTime = currentTime
-                    console.log('Night bird sound played at time:', timeOfDay.toFixed(2))
+                    console.log(
+                        'Night bird sound played at time:',
+                        timeOfDay.toFixed(2)
+                    )
                 }
             }
         }

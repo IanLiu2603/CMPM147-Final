@@ -160,13 +160,13 @@ class Background {
             fill(255, 255, 0, sunAlpha)
             noStroke()
             ellipse(sunX, sunY, 60, 60)
-            
+
             // Sun rays
             // sun with rays by monicawen: https://editor.p5js.org/monicawen/sketches/HkU-BCJqm
             stroke(255, 255, 0, sunAlpha * 0.5)
             strokeWeight(10)
             let rotationAngle = radians(frameCount / 10)
-            
+
             for (let i = 0; i < 8; i++) {
                 let angle = (i * PI) / 4 + rotationAngle
                 let x1 = sunX + cos(angle) * 40
