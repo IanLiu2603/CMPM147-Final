@@ -52,11 +52,10 @@ function setup() {
     rainSystem = new Rain(thunderSound1, thunderSound2, rainSound)
     snowSystem = new Snow()
     populateFlowerList()
-    
+    startBackgroundMusic()
 }
 
 function draw() {
-    startBackgroundMusic()
     backgroundSystem.draw()
     backgroundSystem.updateTime(deltaTime)
 
@@ -104,14 +103,10 @@ function draw() {
 function palyBirdSounds() {
     let currentTime = millis()
     let timeOfDay = backgroundSystem.getTimeOfDay()
-    if (timeOfDay >= 0.0 && timeOfDay < 0.01) {
-        nightBirdSound.setVolume(0)
-        nightBirdSound.play()
-        console.log('Night bird sound played')
-    }
+
     // Check if enough time has passed since last bird sound
     if (currentTime - lastBirdSoundTime > birdSoundCooldown) {
-        if (random() < 0.003) {
+        if (1) {
             // Determine which bird sound to play based on time of day
             if (timeOfDay >= 6.0 && timeOfDay < 18.0) {
                 if (birdSound && !birdSound.isPlaying()) {
@@ -201,7 +196,7 @@ function populateFlowerList() {
 //"cuts" flower with click-> starts the growth process over
 function mousePressed() {
     // start background music on first click
-    startBackgroundMusic()
+    //startBackgroundMusic()
     // for (let flower of flowerList) {
     //     //if (flower.isClicked(mouseX, mouseY)) {
     //     //    flower.hide() // or flower.x = -1000, etc.
@@ -212,7 +207,7 @@ function mousePressed() {
 // Add keyboard controls to test background system
 function keyPressed() {
     // start background music on first key press
-    startBackgroundMusic()
+    //startBackgroundMusic()
 
     if (key === 'd' || key === 'D') {
         // Set to day time (noon)
