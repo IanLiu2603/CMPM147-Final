@@ -147,7 +147,7 @@ function populateFlowerList() {
             random(1,3),
             windowHeight * random(0.02,0.4),
             PI / 2,
-            random(0,2),
+            1,
             [255, 0, 0],
             4,
             20
@@ -160,7 +160,7 @@ function populateFlowerList() {
             random(1,3),
             windowHeight * random(0.02,0.4),
             PI / 2,
-            random(0,2),
+            0,
             [255, 0, 0],
             4,
             20
@@ -173,7 +173,7 @@ function populateFlowerList() {
             random(1,3),
             windowHeight * random(0.02,0.4),
             PI / 2,
-            random(0,2),
+            2,
             [255, 0, 0],
             4,
             20
@@ -186,7 +186,7 @@ function populateFlowerList() {
             random(1,3),
             windowHeight * random(0.02,0.4),
             PI / 2,
-            random(0,2),
+            1,
             [255, 0, 0],
             4,
             20
