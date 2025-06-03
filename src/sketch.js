@@ -52,7 +52,7 @@ function setup() {
     rainSystem = new Rain(thunderSound1, thunderSound2, rainSound)
     snowSystem = new Snow()
     populateFlowerList()
-    //startBackgroundMusic()
+    startBackgroundMusic()
 }
 
 function draw() {
