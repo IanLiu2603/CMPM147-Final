@@ -52,10 +52,11 @@ function setup() {
     rainSystem = new Rain(thunderSound1, thunderSound2, rainSound)
     snowSystem = new Snow()
     populateFlowerList()
-    startBackgroundMusic()
+    
 }
 
 function draw() {
+    startBackgroundMusic()
     backgroundSystem.draw()
     backgroundSystem.updateTime(deltaTime)
 
@@ -200,7 +201,7 @@ function populateFlowerList() {
 //"cuts" flower with click-> starts the growth process over
 function mousePressed() {
     // start background music on first click
-    //startBackgroundMusic()
+    startBackgroundMusic()
     // for (let flower of flowerList) {
     //     //if (flower.isClicked(mouseX, mouseY)) {
     //     //    flower.hide() // or flower.x = -1000, etc.
@@ -208,14 +209,10 @@ function mousePressed() {
     // }
 }
 
-function mouseMoved() {
-    startBackgroundMusic()
-}
-
 // Add keyboard controls to test background system
 function keyPressed() {
     // start background music on first key press
-    //startBackgroundMusic()
+    startBackgroundMusic()
 
     if (key === 'd' || key === 'D') {
         // Set to day time (noon)
