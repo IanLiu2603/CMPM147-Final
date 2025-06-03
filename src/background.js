@@ -13,6 +13,8 @@ class Background {
         this.timeOfDay = 0 // 0-24 hours, 0 = midnight, 12 = noon, 18 = sunset, 6 = sunrise
         this.clouds = []
         this.stars = []
+        this.isRaining = false
+        this.isSnowing = false
         this.initializeClouds()
         this.initializeStars()
         this.paused = false
@@ -77,14 +79,34 @@ class Background {
         this.drawGround()
     }
 
-    // Draw sky gradient based on time of day
+    // Draw sky gradient based on time of day and weather
     drawSky() {
         // Define colors for different times
         let dayColor = color('#008DDA') // Sky blue
         let sunsetColor = color('#FCB454') // Orange
         let nightColor = color('#201658') // Midnight blue
 
+        // Define weather-affected colors
+        let rainyDayColor = color('#4A5568')
+        let rainySunsetColor = color('#7F8CAA')
+        let rainyNightColor = color('#222831')
+
+        let snowyDayColor = color('#94B4C1')
+        let snowySunsetColor = color('#7A7E82')
+        let snowyNightColor = color('#4A5568')
+
         let skyColor
+
+        // Adjust base colors based on weather
+        if (this.isRaining) {
+            dayColor = rainyDayColor
+            sunsetColor = rainySunsetColor
+            nightColor = rainyNightColor
+        } else if (this.isSnowing) {
+            dayColor = snowyDayColor
+            sunsetColor = snowySunsetColor
+            nightColor = snowyNightColor
+        }
 
         if (this.timeOfDay < 5.5 || this.timeOfDay >= 18.5) {
             skyColor = nightColor
@@ -160,13 +182,13 @@ class Background {
             fill(255, 255, 0, sunAlpha)
             noStroke()
             ellipse(sunX, sunY, 60, 60)
-            
+
             // Sun rays
             // sun with rays by monicawen: https://editor.p5js.org/monicawen/sketches/HkU-BCJqm
             stroke(255, 255, 0, sunAlpha * 0.5)
             strokeWeight(10)
             let rotationAngle = radians(frameCount / 10)
-            
+
             for (let i = 0; i < 8; i++) {
                 let angle = (i * PI) / 4 + rotationAngle
                 let x1 = sunX + cos(angle) * 40
@@ -327,5 +349,10 @@ class Background {
     }
     resume() {
         this.paused = false
+    }
+
+    setWeatherState(isRaining, isSnowing) {
+        this.isRaining = isRaining
+        this.isSnowing = isSnowing
     }
 }
