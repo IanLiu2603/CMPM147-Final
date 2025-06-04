@@ -20,7 +20,7 @@ let startButton = {
     x: 0,
     y: 0,
     width: 200,
-    height: 60
+    height: 60,
 }
 let startFont
 
@@ -80,11 +80,11 @@ function drawStartScreen() {
     // gradient background: https://editor.p5js.org/evebdn/sketches/O9G35ueZv
     for (let i = 0; i <= height; i++) {
         let n = map(i, 0, height, 0, 1)
-        let gradientColor = lerpColor(color("#9FC87E"), color("#C562AF"), n)
+        let gradientColor = lerpColor(color('#9FC87E'), color('#C562AF'), n)
         stroke(gradientColor)
         line(0, i, width, i)
     }
-    
+
     // Title
     fill(255)
     stroke(0)
@@ -92,22 +92,32 @@ function drawStartScreen() {
     textAlign(CENTER, CENTER)
     textFont(startFont)
     textSize(48)
-    text("Flower Garden", windowWidth / 2, windowHeight / 2 - 100)
+    text('Flower Garden', windowWidth / 2, windowHeight / 2 - 100)
 
     // Start button
     fill(255)
     stroke(0)
     strokeWeight(2)
-    rect(startButton.x, startButton.y, startButton.width, startButton.height, 10)
+    rect(
+        startButton.x,
+        startButton.y,
+        startButton.width,
+        startButton.height,
+        10
+    )
     fill(0)
     noStroke()
     textSize(24)
-    text("START", windowWidth / 2, windowHeight / 2)
+    text('START', windowWidth / 2, windowHeight / 2)
     fill(255)
     stroke(0)
     strokeWeight(1)
     textSize(16)
-    text("Click START to begin your garden journey", windowWidth / 2, windowHeight / 2 + 100)
+    text(
+        'Click START to begin your garden journey',
+        windowWidth / 2,
+        windowHeight / 2 + 100
+    )
 }
 
 function drawFlowerScreen() {
@@ -254,8 +264,12 @@ function populateFlowerList() {
 function mousePressed() {
     if (gameState === 'start') {
         // Check if start button was clicked
-        if (mouseX >= startButton.x && mouseX <= startButton.x + startButton.width &&
-            mouseY >= startButton.y && mouseY <= startButton.y + startButton.height) {
+        if (
+            mouseX >= startButton.x &&
+            mouseX <= startButton.x + startButton.width &&
+            mouseY >= startButton.y &&
+            mouseY <= startButton.y + startButton.height
+        ) {
             gameState = 'playing'
             startBackgroundMusic()
             console.log('started!')
