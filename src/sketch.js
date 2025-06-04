@@ -173,7 +173,7 @@ function palyBirdSounds() {
 
     // Check if enough time has passed since last bird sound
     if (currentTime - lastBirdSoundTime > birdSoundCooldown) {
-        if (1) {
+        if (random() < 0.003) {
             // Determine which bird sound to play based on time of day
             if (timeOfDay >= 6.0 && timeOfDay < 18.0) {
                 if (birdSound && !birdSound.isPlaying()) {
@@ -276,7 +276,7 @@ function mousePressed() {
         }
     } else if (gameState === 'playing') {
         // start background music on click
-        startBackgroundMusic()
+        //startBackgroundMusic()
         // for (let flower of flowerList) {
         //     //if (flower.isClicked(mouseX, mouseY)) {
         //     //    flower.hide() // or flower.x = -1000, etc.
@@ -288,7 +288,7 @@ function mousePressed() {
 // Add keyboard controls to test background system
 function keyPressed() {
     // start background music on first key press
-    startBackgroundMusic()
+    //startBackgroundMusic()
 
     if (key === 'd' || key === 'D') {
         // Set to day time (noon)
