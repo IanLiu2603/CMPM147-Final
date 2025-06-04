@@ -204,7 +204,7 @@ function palyBirdSounds() {
 //generates a list of flowers and stores it in global
 function populateFlowerList() {
     //parameters: x,y, growthRate, Root angle, Root depth, height, stem angle, stem depth,
-    randomSeed(100)
+    randomSeed(2132131231)
     flowerList = [
         new Plant(
             250,
@@ -214,7 +214,7 @@ function populateFlowerList() {
             random(1,3),
             windowHeight * random(0.02,0.4),
             PI / 2,
-            1,
+            floor(random(0,3)),
             [255, 0, 0],
             4,
             20
@@ -227,7 +227,7 @@ function populateFlowerList() {
             random(1,3),
             windowHeight * random(0.02,0.4),
             PI / 2,
-            0,
+            floor(random(0,2)),
             [255, 0, 0],
             4,
             20
@@ -240,7 +240,7 @@ function populateFlowerList() {
             random(1,3),
             windowHeight * random(0.02,0.4),
             PI / 2,
-            2,
+            floor(random(0,3)),
             [255, 0, 0],
             4,
             20
@@ -253,7 +253,7 @@ function populateFlowerList() {
             random(1,3),
             windowHeight * random(0.02,0.4),
             PI / 2,
-            1,
+            floor(random(0,3)),
             [255, 0, 0],
             4,
             20
