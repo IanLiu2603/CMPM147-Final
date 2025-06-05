@@ -30,8 +30,10 @@ class Plant {
         this.flower_size = flowerSize
         this.total_growth = 0
         this.root = new Root(
+            this.y,
             this.x,
             this.y,
+            this.height,
             this.growth_rate,
             this.root_angle,
             this.root_depth
@@ -56,7 +58,7 @@ class Plant {
             this.stem.grow()
         }
         if (this.total_growth > 300 && this.total_growth < 600) {
-            this.total_growth + this.growth_rate
+            this.total_growth += this.growth_rate
             this.stem.grow()
         }
     }
