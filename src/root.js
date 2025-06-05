@@ -9,11 +9,19 @@
 const MAX_DEPTH = 4 // Maximum depth of the root system
 
 class Root {
-    constructor(initialY, x, y, plantHeight, growthRate = 1, angle = PI / 2, depth = 0) {
-        this.initialY = initialY; // the max height in which the root cannot go below(above the ground on canvas)
+    constructor(
+        initialY,
+        x,
+        y,
+        plantHeight,
+        growthRate = 1,
+        angle = PI / 2,
+        depth = 0
+    ) {
+        this.initialY = initialY // the max height in which the root cannot go below(above the ground on canvas)
         this.x = x
         this.y = y
-        this.plantHeight = plantHeight;
+        this.plantHeight = plantHeight
         this.growth_rate = growthRate
         this.angle = angle
         this.length = 0
@@ -24,9 +32,9 @@ class Root {
     }
 
     grow() {
-        let predictedY = this.y + sin(this.angle) * this.length;
+        let predictedY = this.y + sin(this.angle) * this.length
         if (predictedY < this.initialY) {
-            return;
+            return
         }
         if (this.length < this.maxLength) {
             this.length += 1 * this.growth_rate

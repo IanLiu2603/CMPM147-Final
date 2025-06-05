@@ -22,14 +22,14 @@ class Flower {
     grow() {
         if (this.total_growth <= 300 && this.growth_rate > 0) {
             this.total_growth += this.growth_rate
-        } else if (this.total_growth >= 0 && this.growth_rate < 0){
+        } else if (this.total_growth >= 0 && this.growth_rate < 0) {
             this.total_growth += this.growth_rate
         }
     }
 
     reverseGrowth() {
         if (this.total_growth > 0 && this.growth_rate > 0) {
-           this.growth_rate = -this.growth_rate
+            this.growth_rate = -this.growth_rate
         }
     }
 
@@ -37,7 +37,6 @@ class Flower {
         const D = dist(mouseX, mouseY, this.x, this.y)
         return D < this.size / 2
     }
-
 
     //logic from Kazuki Umeda: https://github.com/Creativeguru97/YouTube_tutorial/tree/master/Play_with_geometry/3DMathFlowers
     //uses polar coordinate system of the flowers origin (x,y) and then uses the sin and cos of this position to create flower's petal design.

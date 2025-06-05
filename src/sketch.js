@@ -16,7 +16,7 @@ let nightBirdSound
 let lastBirdSoundTime = 0
 let birdSoundCooldown = 5000
 let gameState = 'start'
-let playing = "play"
+let playing = 'play'
 let startButton = {
     x: 0,
     y: 0,
@@ -131,9 +131,9 @@ function drawFlowerScreen() {
     for (let flower of flowerList) {
         flower.draw()
         if (!paused) {
-            if (playing === "play"){
+            if (playing === 'play') {
                 flower.grow()
-            } else if (playing === "rw"){
+            } else if (playing === 'rw') {
                 flower.reverseGrow()
             }
         }
@@ -281,7 +281,6 @@ function mousePressed() {
             console.log('started!')
         }
     } else if (gameState === 'playing') {
-
     }
 }
 
@@ -349,7 +348,7 @@ window.resume = function () {
         console.log('Background music resumed')
     }
 
-    playing = "play"
+    playing = 'play'
 }
 
 window.fastforward = function () {
@@ -357,7 +356,7 @@ window.fastforward = function () {
         return
     }
     console.log('ff')
-    playing = "ff"
+    playing = 'ff'
 }
 
 window.rewind = function () {
@@ -365,7 +364,7 @@ window.rewind = function () {
         return
     }
     console.log('rewind')
-    playing = "rw"
+    playing = 'rw'
 }
 
 // from ChatGPT
