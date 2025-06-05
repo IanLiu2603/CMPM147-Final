@@ -83,11 +83,10 @@ class Stem {
         // Reverse flower growth if it exists
         if (this.flower) {
             this.flower.reverseGrowth()
-            if (this.flower.growth <= 0 ) {
+            if (this.flower.growth <= 0) {
                 this.flower = null
             }
         }
-
 
         // Reverse-grow any child branches
         for (let branch of this.branches) {
@@ -97,14 +96,22 @@ class Stem {
         // Check if all branches are fully retracted and gone
         let allBranchesGone = true
         for (let branch of this.branches) {
-            if (branch.length > 0 || branch.flower || branch.branches.length > 0) {
+            if (
+                branch.length > 0 ||
+                branch.flower ||
+                branch.branches.length > 0
+            ) {
                 allBranchesGone = false
                 break
             }
         }
 
-
-        if (!this.flower && allBranchesGone && this.length > 0 && this.growth_rate >= 0) {
+        if (
+            !this.flower &&
+            allBranchesGone &&
+            this.length > 0 &&
+            this.growth_rate >= 0
+        ) {
             this.growth_rate = -this.growth_rate
         }
 
@@ -112,12 +119,12 @@ class Stem {
         // Apply retraction
         if (!this.flower && allBranchesGone) {
             this.length += this.growth_rate
-        } 
+        }
 
         if (this.length < 0) {
-                this.length = 0
-                this.branches = []
-                this.hasBranched = false
+            this.length = 0
+            this.branches = []
+            this.hasBranched = false
         }
     }
 
@@ -138,6 +145,5 @@ class Stem {
             this.flower.grow()
             this.flower.drawFlower()
         }
-
     }
 }
