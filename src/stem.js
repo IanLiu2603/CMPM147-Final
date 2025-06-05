@@ -43,7 +43,7 @@ class Stem {
             this.flower = null
         }
         this.maxLength =
-            depth <= 1
+            depth <= 0
                 ? (this.height * 0.75, this.height)
                 : random(this.height * 0.25, this.height * 0.5) //(longer stem to smaller stems)
     }
