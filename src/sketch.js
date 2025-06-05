@@ -214,12 +214,12 @@ function populateFlowerList() {
         new Plant(
             250,
             windowHeight * 0.85,
-            8,
+            random(1, 2),
             PI / 2,
-            0,
+            random(1, 5),
             windowHeight * random(0.02, 0.4),
             PI / 2,
-            floor(random(0, 3)),
+            0,
             [255, 0, 0],
             4,
             20
@@ -232,7 +232,7 @@ function populateFlowerList() {
             0,
             windowHeight * random(0.02, 0.4),
             PI / 2,
-            floor(random(0, 2)),
+            0,
             [255, 0, 0],
             4,
             20
@@ -245,7 +245,7 @@ function populateFlowerList() {
             0,
             windowHeight * random(0.02, 0.4),
             PI / 2,
-            floor(random(0, 3)),
+            0,
             [255, 0, 0],
             4,
             20
@@ -258,7 +258,7 @@ function populateFlowerList() {
             0,
             windowHeight * random(0.02, 0.4),
             PI / 2,
-            floor(random(0, 3)),
+            0,
             [255, 0, 0],
             4,
             20

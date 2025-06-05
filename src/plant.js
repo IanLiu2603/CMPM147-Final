@@ -66,7 +66,6 @@ class Plant {
 
     reverseGrow() {
         this.stem.reverseGrow()
-        //console.log("I am rewinding Plants")
     }
 
     draw() {
