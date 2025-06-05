@@ -16,6 +16,7 @@ let nightBirdSound
 let lastBirdSoundTime = 0
 let birdSoundCooldown = 5000
 let gameState = 'start'
+let playing = "play"
 let startButton = {
     x: 0,
     y: 0,
@@ -130,13 +131,17 @@ function drawFlowerScreen() {
     for (let flower of flowerList) {
         flower.draw()
         if (!paused) {
-            flower.grow()
+            if (playing === "play"){
+                flower.grow()
+            } else if (playing === "rw"){
+                flower.reverseGrow()
+            }
         }
-        if (flower.type === 'circle') {
-            flower.draw()
-            flower.drawFlower()
-            flower.grow()
-        }
+        // if (flower.type === 'circle') {
+        //     flower.draw()
+        //     flower.drawFlower()
+        //     flower.grow()
+        // }
     }
 
     // Update and draw weather effects
@@ -209,12 +214,12 @@ function populateFlowerList() {
         new Plant(
             250,
             windowHeight * 0.85,
-            random(1,2),
+            8,
             PI / 2,
             0,
-            windowHeight * random(0.02,0.4),
+            windowHeight * random(0.02, 0.4),
             PI / 2,
-            floor(random(0,3)),
+            floor(random(0, 3)),
             [255, 0, 0],
             4,
             20
@@ -222,12 +227,12 @@ function populateFlowerList() {
         new Plant(
             500,
             windowHeight * 0.85,
-            random(1,2),
+            random(1, 2),
             PI / 2,
             0,
-            windowHeight * random(0.02,0.4),
+            windowHeight * random(0.02, 0.4),
             PI / 2,
-            floor(random(0,2)),
+            floor(random(0, 2)),
             [255, 0, 0],
             4,
             20
@@ -235,12 +240,12 @@ function populateFlowerList() {
         new Plant(
             750,
             windowHeight * 0.85,
-            random(1,2),
+            random(1, 2),
             PI / 2,
             0,
-            windowHeight * random(0.02,0.4),
+            windowHeight * random(0.02, 0.4),
             PI / 2,
-            floor(random(0,3)),
+            floor(random(0, 3)),
             [255, 0, 0],
             4,
             20
@@ -248,12 +253,12 @@ function populateFlowerList() {
         new Plant(
             1000,
             windowHeight * 0.85,
-            random(1,2),
+            random(1, 2),
             PI / 2,
-            random(1,3),
-            windowHeight * random(0.02,0.4),
+            0,
+            windowHeight * random(0.02, 0.4),
             PI / 2,
-            floor(random(0,3)),
+            floor(random(0, 3)),
             [255, 0, 0],
             4,
             20
@@ -276,13 +281,7 @@ function mousePressed() {
             console.log('started!')
         }
     } else if (gameState === 'playing') {
-        // start background music on click
-        //startBackgroundMusic()
-        // for (let flower of flowerList) {
-        //     //if (flower.isClicked(mouseX, mouseY)) {
-        //     //    flower.hide() // or flower.x = -1000, etc.
-        //     //}
-        // }
+
     }
 }
 
@@ -349,6 +348,8 @@ window.resume = function () {
         bgMusic.play()
         console.log('Background music resumed')
     }
+
+    playing = "play"
 }
 
 window.fastforward = function () {
@@ -356,6 +357,7 @@ window.fastforward = function () {
         return
     }
     console.log('ff')
+    playing = "ff"
 }
 
 window.rewind = function () {
@@ -363,6 +365,7 @@ window.rewind = function () {
         return
     }
     console.log('rewind')
+    playing = "rw"
 }
 
 // from ChatGPT

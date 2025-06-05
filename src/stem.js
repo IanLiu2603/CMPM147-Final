@@ -79,6 +79,37 @@ class Stem {
         }
     }
 
+    reverseGrow() {
+        // Reverse flower growth if it exists
+        if (this.flower) {
+            //console.log("checking flowers")
+            this.flower.reverseGrowth()
+            if (this.flower.growth === 0) {
+                //this.flower = null
+            }
+            return
+        }
+
+
+        // Reverse-grow any child branches
+        if (this.branches) {
+            for (let branch of this.branches) {
+                branch.reverseGrow()    
+            }
+        }
+
+        if (!this.flower && this.length > 0) {
+            this.lenght -= this.growth_rate
+        }
+
+        // If length has fully retracted, remove branches and flower
+        if (this.length <= 0) {
+            this.branches = []
+            this.hasBranched = false
+            this.flower = null
+        }
+    }
+
     draw() {
         const END_X = this.x + cos(this.angle) * this.length
         const END_Y = this.y - sin(this.angle) * this.length
@@ -96,5 +127,9 @@ class Stem {
             this.flower.grow()
             this.flower.drawFlower()
         }
+
+        // if (this.flower.growth === 0) {
+        //     this.flower = null
+        // }
     }
 }

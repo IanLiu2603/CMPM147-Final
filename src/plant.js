@@ -15,7 +15,7 @@ class Plant {
         stemDepth,
         flowerColor,
         numPetals,
-        flowerSize
+        flowerSize,
     ) {
         this.x = x
         this.y = y
@@ -36,7 +36,7 @@ class Plant {
             this.height,
             this.growth_rate,
             this.root_angle,
-            this.root_depth
+            this.root_depth,
         )
         this.stem = new Stem(
             this.x,
@@ -47,9 +47,10 @@ class Plant {
             this.num_petals,
             this.flower_size,
             this.stem_angle,
-            this.stem_depth
+            this.stem_depth,
         )
     }
+
 
     grow() {
         if (this.total_growth <= 300) {
@@ -61,6 +62,11 @@ class Plant {
             this.total_growth += this.growth_rate
             this.stem.grow()
         }
+    }
+
+    reverseGrow() {
+        this.stem.reverseGrow()
+        //console.log("I am rewinding Plants")
     }
 
     draw() {
