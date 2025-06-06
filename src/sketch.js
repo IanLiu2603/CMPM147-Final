@@ -132,9 +132,13 @@ function drawFlowerScreen() {
         flower.draw()
         if (!paused) {
             if (playing === 'play') {
+                flower.resume()
                 flower.grow()
             } else if (playing === 'rw') {
                 flower.reverseGrow()
+            } else if (playing === 'ff') {
+                flower.fastForward()
+                flower.grow()
             }
         }
         // if (flower.type === 'circle') {
@@ -233,8 +237,8 @@ function populateFlowerList() {
             windowHeight * random(0.02, 0.4),
             PI / 2,
             0,
-            [255, 0, 0],
-            4,
+            [255, 50, 0],
+            11,
             20
         ),
         new Plant(
@@ -246,8 +250,8 @@ function populateFlowerList() {
             windowHeight * random(0.02, 0.4),
             PI / 2,
             0,
-            [255, 0, 0],
-            4,
+            [255, 0, 50],
+            6,
             20
         ),
         new Plant(
@@ -259,8 +263,8 @@ function populateFlowerList() {
             windowHeight * random(0.02, 0.4),
             PI / 2,
             0,
-            [255, 0, 0],
-            4,
+            [155, 50, 50],
+            8,
             20
         ),
     ]
