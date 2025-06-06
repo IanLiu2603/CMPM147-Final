@@ -22,6 +22,7 @@ class Stem {
         this.x = x
         this.y = y
         this.growth_rate = growthRate
+        this.original_growth_rate = this.growth_rate
         this.angle = angle
         this.depth = depth
         this.hasBranched = false
@@ -49,8 +50,12 @@ class Stem {
     }
 
     grow() {
+        //console.log(this.growth_rate)
         if (this.length < this.maxLength) {
-            this.length += 1 * this.growth_rate
+            this.length += this.growth_rate
+            if (this.length > this.maxLength) {
+                this.length = this.maxLength
+            }
         } else if (!this.hasBranched && this.depth < MAX_STEM) {
             //console.log('I am branching')
             this.hasBranched = true
@@ -74,8 +79,10 @@ class Stem {
                 )
             }
         }
-        for (let branch of this.branches) {
-            branch.grow()
+        if (this.length >= this.maxLength) {
+            for (let branch of this.branches) {
+                branch.grow()
+            }
         }
     }
 
@@ -112,7 +119,7 @@ class Stem {
             this.length > 0 &&
             this.growth_rate >= 0
         ) {
-            this.growth_rate = -this.growth_rate
+            this.growth_rate = -this.original_growth_rate
         }
 
         // If length has fully retracted, remove branches and flower
@@ -125,6 +132,28 @@ class Stem {
             this.length = 0
             this.branches = []
             this.hasBranched = false
+        }
+    }
+
+    resume() {
+        if (this.growth_rate < 0) {
+            this.growth_rate = this.original_growth_rate
+        }
+
+        if (this.flower) {
+            this.flower.resume()
+        }
+
+        for (let branch of this.branches) {
+            branch.resume()
+        }
+    }
+
+    fastForward() {
+        this.growth_rate *= 1.25
+
+        if (this.flower) {
+            this.flower.fastForward()
         }
     }
 
