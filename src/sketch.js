@@ -66,6 +66,18 @@ function setup() {
     rainSystem = new Rain(thunderSound1, thunderSound2, rainSound)
     snowSystem = new Snow()
     populateFlowerList()
+
+    //Logic taken from experiment 4
+    let label = createP();
+    label.html("World key: ");
+    label.class("world-key")
+    label.parent("canvas-container");
+
+    let input = createInput("xyzzy");
+    input.parent(label);
+    input.input(() => {
+        //rebuildWorld(input.value());
+    });
 }
 
 function draw() {
