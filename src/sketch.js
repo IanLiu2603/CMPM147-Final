@@ -55,6 +55,12 @@ function startBackgroundMusic() {
     }
 }
 
+function worldKeyChanged(key) {
+  worldSeed = XXH.h32(key, 0);
+  noiseSeed(worldSeed);
+  randomSeed(worldSeed);
+}
+
 function setup() {
     canvas = createCanvas(windowWidth, windowHeight)
     canvas.parent('canvas-container') // Attach canvas to the correct div
@@ -76,8 +82,16 @@ function setup() {
     let input = createInput("xyzzy");
     input.parent(label);
     input.input(() => {
-        //rebuildWorld(input.value());
+        reflower(input.value());
     });
+}
+
+function reflower(key){
+    if (window.worldKeyChanged) {
+        window.worldKeyChanged(key);
+        console.log("key change")
+    }
+    populateFlowerList()
 }
 
 function draw() {
@@ -225,7 +239,6 @@ function palyBirdSounds() {
 //generates a list of flowers and stores it in global
 function populateFlowerList() {
     //parameters: x,y, growthRate, Root angle, Root depth, height, stem angle, stem depth,
-    randomSeed(2132131231)
     flowerList = [
         new Plant(
             250,
