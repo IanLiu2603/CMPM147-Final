@@ -11,6 +11,19 @@ let isMuted = false
 let thunderSound1
 let thunderSound2
 let rainSound
+let birdSound
+let nightBirdSound
+let lastBirdSoundTime = 0
+let birdSoundCooldown = 5000
+let gameState = 'start'
+let playing = 'play'
+let startButton = {
+    x: 0,
+    y: 0,
+    width: 200,
+    height: 60,
+}
+let startFont
 
 function preload() {
     // music from https://soundcloud.com/royaltyfreemusic-nocopyrightmusic/sets/3-creative-commons-music
@@ -24,17 +37,12 @@ function preload() {
     thunderSound2 = loadSound('./src/asset/thunder2.mp3')
     // https://pixabay.com/sound-effects/rain-sounds-ambience-351115/
     rainSound = loadSound('./src/asset/rain-sounds.mp3')
-}
-
-function setup() {
-    canvas = createCanvas(windowWidth, windowHeight)
-    canvas.parent('canvas-container') // Attach canvas to the correct div
-
-    backgroundSystem = new Background()
-    rainSystem = new Rain(thunderSound1, thunderSound2, rainSound)
-    snowSystem = new Snow()
-    populateFlowerList()
-    startBackgroundMusic()
+    // https://pixabay.com/sound-effects/bird-327231/
+    birdSound = loadSound('./src/asset/bird.mp3')
+    // https://pixabay.com/sound-effects/perkutut-bird-of-java-337019/
+    nightBirdSound = loadSound('./src/asset/night-bird.mp3')
+    // https://www.dafont.com/agreloy.font
+    startFont = loadFont('./src/asset/Agreloy.ttf')
 }
 
 // function to start background music
@@ -47,7 +55,73 @@ function startBackgroundMusic() {
     }
 }
 
+function setup() {
+    canvas = createCanvas(windowWidth, windowHeight)
+    canvas.parent('canvas-container') // Attach canvas to the correct div
+
+    startButton.x = windowWidth / 2 - startButton.width / 2
+    startButton.y = windowHeight / 2 - startButton.height / 2
+
+    backgroundSystem = new Background()
+    rainSystem = new Rain(thunderSound1, thunderSound2, rainSound)
+    snowSystem = new Snow()
+    populateFlowerList()
+}
+
 function draw() {
+    if (gameState === 'start') {
+        drawStartScreen()
+    } else if (gameState === 'playing') {
+        drawFlowerScreen()
+    }
+}
+
+// switch screen : https://editor.p5js.org/msboyles/sketches/nDSJ6Ew2Mc
+function drawStartScreen() {
+    // gradient background: https://editor.p5js.org/evebdn/sketches/O9G35ueZv
+    for (let i = 0; i <= height; i++) {
+        let n = map(i, 0, height, 0, 1)
+        let gradientColor = lerpColor(color('#9FC87E'), color('#C562AF'), n)
+        stroke(gradientColor)
+        line(0, i, width, i)
+    }
+
+    // Title
+    fill(255)
+    stroke(0)
+    strokeWeight(2)
+    textAlign(CENTER, CENTER)
+    textFont(startFont)
+    textSize(48)
+    text('Flower Garden', windowWidth / 2, windowHeight / 2 - 100)
+
+    // Start button
+    fill(255)
+    stroke(0)
+    strokeWeight(2)
+    rect(
+        startButton.x,
+        startButton.y,
+        startButton.width,
+        startButton.height,
+        10
+    )
+    fill(0)
+    noStroke()
+    textSize(24)
+    text('START', windowWidth / 2, windowHeight / 2)
+    fill(255)
+    stroke(0)
+    strokeWeight(1)
+    textSize(16)
+    text(
+        'Click START to begin your garden journey',
+        windowWidth / 2,
+        windowHeight / 2 + 100
+    )
+}
+
+function drawFlowerScreen() {
     backgroundSystem.draw()
     backgroundSystem.updateTime(deltaTime)
 
@@ -57,13 +131,21 @@ function draw() {
     for (let flower of flowerList) {
         flower.draw()
         if (!paused) {
-            flower.grow()
+            if (playing === 'play') {
+                flower.resume()
+                flower.grow()
+            } else if (playing === 'rw') {
+                flower.reverseGrow()
+            } else if (playing === 'ff') {
+                flower.fastForward()
+                flower.grow()
+            }
         }
-        if (flower.type === 'circle') {
-            flower.draw()
-            flower.drawFlower()
-            flower.grow()
-        }
+        // if (flower.type === 'circle') {
+        //     flower.draw()
+        //     flower.drawFlower()
+        //     flower.grow()
+        // }
     }
 
     // Update and draw weather effects
@@ -74,11 +156,17 @@ function draw() {
     rainSystem.draw()
     snowSystem.draw()
 
+    if (!paused && !isMuted && musicStarted) {
+        palyBirdSounds()
+    }
+
     // Display current time of day for testing (top-left corner)
     fill(255)
     stroke(0)
     strokeWeight(1)
     textSize(16)
+    textFont('Courier New')
+    textAlign(LEFT, TOP)
     // from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/toFixed
     text(`Time: ${backgroundSystem.getFormattedTime()}`, 10, 25)
     text(
@@ -88,19 +176,54 @@ function draw() {
     )
 }
 
+function palyBirdSounds() {
+    let currentTime = millis()
+    let timeOfDay = backgroundSystem.getTimeOfDay()
+
+    // Check if enough time has passed since last bird sound
+    if (currentTime - lastBirdSoundTime > birdSoundCooldown) {
+        if (random() < 0.003) {
+            // Determine which bird sound to play based on time of day
+            if (timeOfDay >= 6.0 && timeOfDay < 18.0) {
+                if (birdSound && !birdSound.isPlaying()) {
+                    birdSound.setVolume(isMuted ? 0 : 0.15)
+                    birdSound.play()
+                    lastBirdSoundTime = currentTime
+                    console.log(
+                        'Day bird sound played at time:',
+                        timeOfDay.toFixed(2)
+                    )
+                }
+            } else {
+                // Nighttime (6 PM to 6 AM) - play night bird sound
+                if (nightBirdSound && !nightBirdSound.isPlaying()) {
+                    nightBirdSound.setVolume(isMuted ? 0 : 0.12)
+                    nightBirdSound.play()
+                    lastBirdSoundTime = currentTime
+                    console.log(
+                        'Night bird sound played at time:',
+                        timeOfDay.toFixed(2)
+                    )
+                }
+            }
+        }
+    }
+}
+
 //generates a list of flowers and stores it in global
 function populateFlowerList() {
     //parameters: x,y, growthRate, Root angle, Root depth, height, stem angle, stem depth,
+    randomSeed(2132131231)
     flowerList = [
         new Plant(
             250,
             windowHeight * 0.85,
-            1,
+            random(1, 2),
             PI / 2,
-            3,
-            windowHeight * 0.21,
+            random(1, 5),
+            windowHeight * random(0.02, 0.4),
             PI / 2,
-            1,
+            0,
             [255, 0, 0],
             4,
             20
@@ -108,40 +231,40 @@ function populateFlowerList() {
         new Plant(
             500,
             windowHeight * 0.85,
-            1.5,
+            random(1, 2),
             PI / 2,
-            1,
-            windowHeight * 0.2,
+            0,
+            windowHeight * random(0.02, 0.4),
             PI / 2,
-            2,
-            [255, 0, 0],
-            4,
+            0,
+            [255, 50, 0],
+            11,
             20
         ),
         new Plant(
             750,
             windowHeight * 0.85,
-            1,
+            random(1, 2),
             PI / 2,
-            2,
-            windowHeight * 0.3,
+            0,
+            windowHeight * random(0.02, 0.4),
             PI / 2,
-            1,
-            [255, 0, 0],
-            4,
+            0,
+            [255, 0, 50],
+            6,
             20
         ),
         new Plant(
             1000,
             windowHeight * 0.85,
-            1.5,
-            PI / 2,
-            1,
-            windowHeight * 0.07,
+            random(1, 2),
             PI / 2,
             0,
-            [255, 0, 0],
-            4,
+            windowHeight * random(0.02, 0.4),
+            PI / 2,
+            0,
+            [155, 50, 50],
+            8,
             20
         ),
     ]
@@ -149,13 +272,20 @@ function populateFlowerList() {
 
 //"cuts" flower with click-> starts the growth process over
 function mousePressed() {
-    // start background music on first click
-    //startBackgroundMusic()
-    // for (let flower of flowerList) {
-    //     //if (flower.isClicked(mouseX, mouseY)) {
-    //     //    flower.hide() // or flower.x = -1000, etc.
-    //     //}
-    // }
+    if (gameState === 'start') {
+        // Check if start button was clicked
+        if (
+            mouseX >= startButton.x &&
+            mouseX <= startButton.x + startButton.width &&
+            mouseY >= startButton.y &&
+            mouseY <= startButton.y + startButton.height
+        ) {
+            gameState = 'playing'
+            startBackgroundMusic()
+            console.log('started!')
+        }
+    } else if (gameState === 'playing') {
+    }
 }
 
 // Add keyboard controls to test background system
@@ -188,33 +318,64 @@ let paused = false
 //Function should stop background movement, flower growth, and stem progression
 
 window.pause = function () {
+    if (gameState === 'start') {
+        return
+    }
     //Background
     console.log('pausing')
     backgroundSystem.pause()
 
     //Plant
     paused = true
+
+    // Pause background music
+    if (bgMusic && musicStarted && bgMusic.isPlaying()) {
+        bgMusic.pause()
+        console.log('Background music paused')
+    }
 }
 
 window.resume = function () {
+    if (gameState === 'start') {
+        return
+    }
     console.log('resume')
     //Background
     backgroundSystem.resume()
 
     //Plant
     paused = false
+
+    // Resume background music
+    if (bgMusic && musicStarted && !bgMusic.isPlaying() && !isMuted) {
+        bgMusic.play()
+        console.log('Background music resumed')
+    }
+
+    playing = 'play'
 }
 
 window.fastforward = function () {
+    if (gameState === 'start') {
+        return
+    }
     console.log('ff')
+    playing = 'ff'
 }
 
 window.rewind = function () {
+    if (gameState === 'start') {
+        return
+    }
     console.log('rewind')
+    playing = 'rw'
 }
 
 // from ChatGPT
 window.mute = function () {
+    if (gameState === 'start') {
+        return
+    }
     const VOLUME_BTN = document.getElementById('volume-btn')
     if (isMuted) {
         if (bgMusic && musicStarted) {
@@ -222,6 +383,8 @@ window.mute = function () {
             rainSound.setVolume(0.01)
             thunderSound1.setVolume(0.1)
             thunderSound2.setVolume(0.1)
+            birdSound.setVolume(0.1)
+            nightBirdSound.setVolume(0.15)
         }
         VOLUME_BTN.textContent = '🔈'
         isMuted = false
@@ -232,6 +395,8 @@ window.mute = function () {
             rainSound.setVolume(0)
             thunderSound1.setVolume(0)
             thunderSound2.setVolume(0)
+            birdSound.setVolume(0)
+            nightBirdSound.setVolume(0)
         }
         VOLUME_BTN.textContent = '🔇'
         isMuted = true
@@ -240,11 +405,15 @@ window.mute = function () {
 }
 
 window.Raining = function () {
+    if (gameState === 'start') {
+        return
+    }
     const RAIN_BTN = document.getElementById('rain-btn')
     const SNOW_BTN = document.getElementById('snow-btn')
     if (rainSystem.isActive) {
         // Stop rain
         rainSystem.stop()
+        backgroundSystem.setWeatherState(false, snowSystem.isActive)
         RAIN_BTN.classList.remove('active')
         console.log('Rain stopped')
     } else {
@@ -254,17 +423,22 @@ window.Raining = function () {
             SNOW_BTN.classList.remove('active')
         }
         rainSystem.start()
+        backgroundSystem.setWeatherState(true, false)
         RAIN_BTN.classList.add('active')
         console.log('Rain started')
     }
 }
 
 window.Snowing = function () {
+    if (gameState === 'start') {
+        return
+    }
     const SNOW_BTN = document.getElementById('snow-btn')
     const RAIN_BTN = document.getElementById('rain-btn')
     if (snowSystem.isActive) {
         // Stop snow
         snowSystem.stop()
+        backgroundSystem.setWeatherState(rainSystem.isActive, false)
         SNOW_BTN.classList.remove('active')
         console.log('Snow stopped')
     } else {
@@ -274,6 +448,7 @@ window.Snowing = function () {
             RAIN_BTN.classList.remove('active')
         }
         snowSystem.start()
+        backgroundSystem.setWeatherState(false, true)
         SNOW_BTN.classList.add('active')
         console.log('Snow started')
     }

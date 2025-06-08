@@ -7,36 +7,44 @@ class Flower {
     constructor(x, y, size = 20, petals = 4, color = [0, 0, 0]) {
         this.x = x
         this.y = y
-        this.size = size
+        this.size = random(size * 0.3, size)
         this.petals = petals
         this.health = 100
         this.total_growth = 0
-        this.growth_rate = 1
+        this.growth_rate = 8
+        this.original_growth_rate = this.growth_rate
         this.color = color
     }
 
+    get growth() {
+        return this.total_growth
+    }
+
     grow() {
-        if (this.total_growth <= 300) {
+        if (this.total_growth <= 300 && this.growth_rate > 0) {
             this.total_growth += this.growth_rate
-            // this.y -= 1 * this.growth_rate
-            // console.log(this.total_growth)
+        } else if (this.total_growth >= 0 && this.growth_rate < 0) {
+            this.total_growth += this.growth_rate
         }
+    }
+
+    reverseGrowth() {
+        if (this.total_growth > 0 && this.growth_rate > 0) {
+            this.growth_rate = -this.growth_rate
+        }
+    }
+
+    resume() {
+        this.growth_rate = this.original_growth_rate
+    }
+
+    fastForward() {
+        this.growth_rate = this.original_growth_rate * 2
     }
 
     isClicked(mouseX, mouseY) {
         const D = dist(mouseX, mouseY, this.x, this.y)
         return D < this.size / 2
-    }
-
-    draw() {
-        if (this.total_growth < 300) {
-            //this.y -= 1
-            //console.log(this.total_growth);
-        }
-    }
-
-    hide() {
-        this.size = 0
     }
 
     //logic from Kazuki Umeda: https://github.com/Creativeguru97/YouTube_tutorial/tree/master/Play_with_geometry/3DMathFlowers
@@ -48,7 +56,7 @@ class Flower {
 
         fill(this.color)
         stroke(this.color)
-        strokeWeight(3 * growthFactor) // thinner lines at the beginning
+        strokeWeight(3) // thinner lines at the beginning
 
         let outlinePoints = []
 
@@ -66,6 +74,12 @@ class Flower {
         endShape()
 
         for (let point of outlinePoints) {
+            stroke([
+                this.color[0] - 50,
+                this.color[1] + 100,
+                this.color[2] + 150,
+            ])
+            strokeWeight(0.5 * growthFactor) // thinner lines at the beginning
             line(this.x, this.y, point[0], point[1])
         }
     }

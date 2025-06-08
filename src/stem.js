@@ -22,6 +22,7 @@ class Stem {
         this.x = x
         this.y = y
         this.growth_rate = growthRate
+        this.original_growth_rate = this.growth_rate
         this.angle = angle
         this.depth = depth
         this.hasBranched = false
@@ -43,14 +44,18 @@ class Stem {
             this.flower = null
         }
         this.maxLength =
-            depth <= 1
+            depth <= 0
                 ? (this.height * 0.75, this.height)
                 : random(this.height * 0.25, this.height * 0.5) //(longer stem to smaller stems)
     }
 
     grow() {
+        //console.log(this.growth_rate)
         if (this.length < this.maxLength) {
-            this.length += 1 * this.growth_rate
+            this.length += this.growth_rate
+            if (this.length > this.maxLength) {
+                this.length = this.maxLength
+            }
         } else if (!this.hasBranched && this.depth < MAX_STEM) {
             //console.log('I am branching')
             this.hasBranched = true
@@ -74,8 +79,81 @@ class Stem {
                 )
             }
         }
+        if (this.length >= this.maxLength) {
+            for (let branch of this.branches) {
+                branch.grow()
+            }
+        }
+    }
+
+    reverseGrow() {
+        // Reverse flower growth if it exists
+        if (this.flower) {
+            this.flower.reverseGrowth()
+            if (this.flower.growth <= 0) {
+                this.flower = null
+            }
+        }
+
+        // Reverse-grow any child branches
         for (let branch of this.branches) {
-            branch.grow()
+            branch.reverseGrow()
+        }
+
+        // Check if all branches are fully retracted and gone
+        let allBranchesGone = true
+        for (let branch of this.branches) {
+            if (
+                branch.length > 0 ||
+                branch.flower ||
+                branch.branches.length > 0
+            ) {
+                allBranchesGone = false
+                break
+            }
+        }
+
+        if (
+            !this.flower &&
+            allBranchesGone &&
+            this.length > 0 &&
+            this.growth_rate >= 0
+        ) {
+            this.growth_rate = -this.original_growth_rate
+        }
+
+        // If length has fully retracted, remove branches and flower
+        // Apply retraction
+        if (!this.flower && allBranchesGone) {
+            this.length += this.growth_rate
+        }
+
+        if (this.length < 0) {
+            this.length = 0
+            this.branches = []
+            this.hasBranched = false
+        }
+    }
+
+    resume() {
+        if (this.growth_rate < 0) {
+            this.growth_rate = this.original_growth_rate
+        }
+
+        if (this.flower) {
+            this.flower.resume()
+        }
+
+        for (let branch of this.branches) {
+            branch.resume()
+        }
+    }
+
+    fastForward() {
+        this.growth_rate *= 1.25
+
+        if (this.flower) {
+            this.flower.fastForward()
         }
     }
 

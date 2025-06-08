@@ -6,12 +6,22 @@
  */
 
 // global variables
-const MAX_DEPTH = 6 // Maximum depth of the root system
+const MAX_DEPTH = 4 // Maximum depth of the root system
 
 class Root {
-    constructor(x, y, growthRate = 1, angle = PI / 2, depth = 0) {
+    constructor(
+        initialY,
+        x,
+        y,
+        plantHeight,
+        growthRate = 1,
+        angle = PI / 2,
+        depth = 0
+    ) {
+        this.initialY = initialY // the max height in which the root cannot go below(above the ground on canvas)
         this.x = x
         this.y = y
+        this.plantHeight = plantHeight
         this.growth_rate = growthRate
         this.angle = angle
         this.length = 0
@@ -22,13 +32,10 @@ class Root {
     }
 
     grow() {
-        const NEW_LENGTH = this.length + 1 * this.growth_rate
-        const NEW_END_POINT = this.y + sin(this.angle) * NEW_LENGTH
-
-        if (NEW_END_POINT < windowHeight * 0.85) {
+        let predictedY = this.y + sin(this.angle) * this.length
+        if (predictedY < this.initialY) {
             return
         }
-
         if (this.length < this.maxLength) {
             this.length += 1 * this.growth_rate
         } else if (!this.hasBranched && this.depth < MAX_DEPTH) {
@@ -40,11 +47,13 @@ class Root {
                 return
             }
             for (let i = 0; i < NUM_BRANCHES; i++) {
-                const NEW_ANGLE = this.angle + random(-PI / 4, PI / 4)
+                const NEW_ANGLE = this.angle + random(-PI / 6, PI / 6)
                 this.branches.push(
                     new Root(
+                        this.initialY,
                         END_X,
                         END_Y,
+                        this.plantHeight,
                         this.growth_rate,
                         NEW_ANGLE,
                         this.depth + 1
