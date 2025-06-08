@@ -54,22 +54,37 @@ class Plant {
     grow() {
         if (this.total_growth <= 300) {
             this.total_growth += this.growth_rate
-            this.root.grow()
-            this.stem.grow()
+            if (this.stem) {
+                this.stem.grow()
+            }
+            if (this.root) {
+                this.root.grow()
+            }
         }
         if (this.total_growth > 300 && this.total_growth < 600) {
             this.total_growth += this.growth_rate
-            this.stem.grow()
+            if (this.stem) {
+                this.stem.grow()
+            }
         }
     }
 
     reverseGrow() {
-        this.stem.reverseGrow()
+        if (this.stem) {
+            this.stem.reverseGrow()
+        }
+        if (this.root) {
+            this.root.reverseGrow()
+            this.root.grow()
+        }
     }
 
     resume() {
         if (this.stem) {
             this.stem.resume()
+        }
+        if (this.root) {
+            this.root.resume()
         }
     }
 
@@ -82,7 +97,11 @@ class Plant {
     }
 
     draw() {
-        this.root.draw()
-        this.stem.draw()
+        if (this.stem) {
+            this.stem.draw()
+        }
+        if (this.root) {
+            this.root.draw()
+        }
     }
 }

@@ -59,6 +59,7 @@ class Stem {
         } else if (!this.hasBranched && this.depth < MAX_STEM) {
             //console.log('I am branching')
             this.hasBranched = true
+            console.log(this.height)
             const NUM_BRANCHES = floor(random(2, 5))
             const END_X = this.x + cos(this.angle) * this.length
             const END_Y = this.y - sin(this.angle) * this.length
@@ -136,7 +137,7 @@ class Stem {
     }
 
     resume() {
-        if (this.growth_rate < 0) {
+        if (this.growth_rate > this.original_growth_rate) {
             this.growth_rate = this.original_growth_rate
         }
 
@@ -150,7 +151,9 @@ class Stem {
     }
 
     fastForward() {
-        this.growth_rate *= 1.25
+        if (this.growth_rate === this.original_growth_rate) {
+            this.growth_rate *= 1.25
+        }
 
         if (this.flower) {
             this.flower.fastForward()
