@@ -29,41 +29,103 @@ class Root {
         this.hasBranched = false
         this.branches = []
         this.maxLength = depth <= 1 ? random(2, 5) : random(20, 40)
+
+        this.direction = 1 // 1 = grow, -1 = reverse
+        this.speedMultiplier = 1
     }
 
     grow() {
-        let predictedY = this.y + sin(this.angle) * this.length
-        if (predictedY < this.initialY) {
-            return
-        }
-        if (this.length < this.maxLength) {
-            this.length += 1 * this.growth_rate
-        } else if (!this.hasBranched && this.depth < MAX_DEPTH) {
-            this.hasBranched = true
-            const NUM_BRANCHES = floor(random(2, 5))
-            const END_X = this.x + cos(this.angle) * this.length
-            const END_Y = this.y + sin(this.angle) * this.length
-            if (END_Y < windowHeight * 0.85) {
-                return
-            }
-            for (let i = 0; i < NUM_BRANCHES; i++) {
-                const NEW_ANGLE = this.angle + random(-PI / 6, PI / 6)
-                this.branches.push(
-                    new Root(
-                        this.initialY,
-                        END_X,
-                        END_Y,
-                        this.plantHeight,
-                        this.growth_rate,
-                        NEW_ANGLE,
-                        this.depth + 1
-                    )
-                )
-            }
-        }
+        let delta = this.growth_rate * this.speedMultiplier * this.direction
+        let predictedY = this.y + sin(this.angle) * (this.length + delta)
 
+        if (this.direction === 1) {
+            if (predictedY < this.initialY) return
+            if (this.length < this.maxLength) {
+                this.length += delta
+            } else if (!this.hasBranched && this.depth < MAX_DEPTH) {
+                const END_X = this.x + cos(this.angle) * this.length
+                const END_Y = this.y + sin(this.angle) * this.length
+                if (END_Y < windowHeight * 0.85) return
+
+                this.hasBranched = true
+                const NUM_BRANCHES = floor(random(2, 5))
+                for (let i = 0; i < NUM_BRANCHES; i++) {
+                    const NEW_ANGLE = this.angle + random(-PI / 6, PI / 6)
+                    this.branches.push(
+                        new Root(
+                            this.initialY,
+                            END_X,
+                            END_Y,
+                            this.plantHeight,
+                            this.growth_rate,
+                            NEW_ANGLE,
+                            this.depth + 1
+                        )
+                    )
+                }
+            }
+            for (let branch of this.branches) {
+                branch.grow()
+            }
+        } else if (this.direction === -1) {
+            if (this.branches.length > 0) {
+                let allChildrenReversed = true
+                for (let i = this.branches.length - 1; i >= 0; i--) {
+                    this.branches[i].grow()
+                    if (
+                        !(
+                            this.branches[i].length <= 0 &&
+                            this.branches[i].branches.length === 0
+                        )
+                    ) {
+                        allChildrenReversed = false
+                    } else {
+                        this.branches.splice(i, 1)
+                    }
+                }
+
+                // shrink root if children all reversed
+                if (allChildrenReversed && this.length > 0) {
+                    this.length +=
+                        this.growth_rate * this.speedMultiplier * this.direction
+                    if (this.length <= 0) {
+                        this.length = 0
+                        this.hasBranched = false
+                    }
+                }
+            } else if (this.length > 0) {
+                this.length +=
+                    this.growth_rate * this.speedMultiplier * this.direction
+                if (this.length <= 0) {
+                    this.length = 0
+                    this.hasBranched = false
+                }
+            }
+        }
+    }
+
+    reverseGrow() {
+        this.direction = -1
         for (let branch of this.branches) {
-            branch.grow()
+            branch.reverseGrow()
+        }
+    }
+
+    resume() {
+        this.direction = 1
+        this.speedMultiplier = 1
+        if (this.length === 0 && !this.hasBranched) {
+            this.maxLength = this.depth <= 1 ? random(2, 5) : random(20, 40)
+        }
+        for (let branch of this.branches) {
+            branch.resume()
+        }
+    }
+
+    fastForward() {
+        this.speedMultiplier = 1.25
+        for (let branch of this.branches) {
+            branch.fastForward()
         }
     }
 

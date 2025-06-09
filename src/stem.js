@@ -136,7 +136,7 @@ class Stem {
     }
 
     resume() {
-        if (this.growth_rate < 0) {
+        if (this.growth_rate > this.original_growth_rate) {
             this.growth_rate = this.original_growth_rate
         }
 
@@ -150,7 +150,9 @@ class Stem {
     }
 
     fastForward() {
-        this.growth_rate *= 1.25
+        if (this.growth_rate === this.original_growth_rate) {
+            this.growth_rate *= 1.25
+        }
 
         if (this.flower) {
             this.flower.fastForward()
