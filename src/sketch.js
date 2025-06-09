@@ -1,5 +1,5 @@
 let canvas
-let flowerList = []
+let plantList = []
 let backgroundSystem
 let rainSystem
 let snowSystem
@@ -55,6 +55,12 @@ function startBackgroundMusic() {
     }
 }
 
+function worldKeyChanged(key) {
+    worldSeed = XXH.h32(key, 0)
+    noiseSeed(worldSeed)
+    randomSeed(worldSeed)
+}
+
 function setup() {
     canvas = createCanvas(windowWidth, windowHeight)
     canvas.parent('canvas-container') // Attach canvas to the correct div
@@ -65,6 +71,26 @@ function setup() {
     backgroundSystem = new Background()
     rainSystem = new Rain(thunderSound1, thunderSound2, rainSound)
     snowSystem = new Snow()
+    populateFlowerList()
+
+    //Logic taken from experiment 4
+    let label = createP()
+    label.html('World key: ')
+    label.class('world-key')
+    label.parent('canvas-container')
+
+    let input = createInput('xyzzy')
+    input.parent(label)
+    input.input(() => {
+        reflower(input.value())
+    })
+}
+
+function reflower(key) {
+    if (window.worldKeyChanged) {
+        window.worldKeyChanged(key)
+        console.log('key change')
+    }
     populateFlowerList()
 }
 
@@ -128,7 +154,7 @@ function drawFlowerScreen() {
     fill(0)
 
     //draws a circle as placeholder for flower bud/ bloom
-    for (let flower of flowerList) {
+    for (let flower of plantList) {
         flower.draw()
         if (!paused) {
             if (playing === 'play') {
@@ -213,19 +239,41 @@ function palyBirdSounds() {
 //generates a list of flowers and stores it in global
 function populateFlowerList() {
     //parameters: x,y, growthRate, Root angle, Root depth, height, stem angle, stem depth,
-    randomSeed(2132131231)
-    flowerList = [
+    colorList = [
+        [255, 100, 100], // soft red
+        [100, 100, 255], // cool blue
+        [255, 150, 80], // orange
+        [100, 255, 200], // aqua (but not green)
+        [200, 100, 255], // purple
+        [255, 100, 200], // pinkish
+        [150, 100, 255], // violet
+        [100, 255, 255], // cyan
+        [255, 100, 150], // rose
+        [255, 200, 100], // golden
+        [255, 70, 100], // cherry red
+        [150, 255, 150], // pastel mint (still not light green)
+        [100, 150, 255], // light indigo
+        [255, 150, 200], // soft pink
+        [200, 150, 255], // lilac
+        [255, 100, 255], // magenta
+        [255, 255, 100], // yellow (but not greenish)
+        [100, 200, 255], // sky blue
+        [255, 120, 180], // watermelon
+        [255, 150, 150], // salmon
+    ]
+
+    plantList = [
         new Plant(
             250,
             windowHeight * 0.85,
             random(1, 2),
             PI / 2,
             random(1, 5),
-            windowHeight * random(0.02, 0.4),
+            windowHeight * random(0.05, 0.25),
             PI / 2,
             0,
-            [255, 0, 0],
-            4,
+            random(colorList),
+            random(4, 15),
             20
         ),
         new Plant(
@@ -234,11 +282,11 @@ function populateFlowerList() {
             random(1, 2),
             PI / 2,
             0,
-            windowHeight * random(0.02, 0.4),
+            windowHeight * random(0.05, 0.25),
             PI / 2,
             0,
-            [255, 50, 0],
-            11,
+            random(colorList),
+            random(4, 15),
             20
         ),
         new Plant(
@@ -247,11 +295,11 @@ function populateFlowerList() {
             random(1, 2),
             PI / 2,
             0,
-            windowHeight * random(0.02, 0.4),
+            windowHeight * random(0.05, 0.25),
             PI / 2,
             0,
-            [255, 0, 50],
-            6,
+            random(colorList),
+            random(4, 15),
             20
         ),
         new Plant(
@@ -260,11 +308,11 @@ function populateFlowerList() {
             random(1, 2),
             PI / 2,
             0,
-            windowHeight * random(0.02, 0.4),
+            windowHeight * random(0.05, 0.25),
             PI / 2,
             0,
-            [155, 50, 50],
-            8,
+            random(colorList),
+            random(4, 15),
             20
         ),
     ]
@@ -285,7 +333,47 @@ function mousePressed() {
             console.log('started!')
         }
     } else if (gameState === 'playing') {
+        // Don't add a plant if interacting with UI
+        const ACTIVE_ELEMENT = document.activeElement
+        if (
+            ACTIVE_ELEMENT.tagName === 'INPUT' ||
+            ACTIVE_ELEMENT.tagName === 'TEXTAREA' ||
+            mouseIsOverButton()
+        ) {
+            return // Ignore click
+        }
+        let newPlant = new Plant(
+            mouseX,
+            windowHeight * 0.85,
+            random(1, 2),
+            PI / 2,
+            random(1, 5),
+            windowHeight * random(0.05, 0.25),
+            PI / 2,
+            0,
+            random(colorList),
+            random(4, 15),
+            20
+        )
+        plantList.push(newPlant)
+        console.log('New plant added at:', mouseX)
     }
+}
+
+function mouseIsOverButton() {
+    const BUTTONS = document.querySelectorAll('button')
+    for (let btn of BUTTONS) {
+        let rect = btn.getBoundingClientRect()
+        if (
+            mouseX >= rect.left &&
+            mouseX <= rect.right &&
+            mouseY >= rect.top &&
+            mouseY <= rect.bottom
+        ) {
+            return true
+        }
+    }
+    return false
 }
 
 // Add keyboard controls to test background system
