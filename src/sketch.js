@@ -55,6 +55,12 @@ function startBackgroundMusic() {
     }
 }
 
+function worldKeyChanged(key) {
+    worldSeed = XXH.h32(key, 0)
+    noiseSeed(worldSeed)
+    randomSeed(worldSeed)
+}
+
 function setup() {
     canvas = createCanvas(windowWidth, windowHeight)
     canvas.parent('canvas-container') // Attach canvas to the correct div
@@ -65,6 +71,26 @@ function setup() {
     backgroundSystem = new Background()
     rainSystem = new Rain(thunderSound1, thunderSound2, rainSound)
     snowSystem = new Snow()
+    populateFlowerList()
+
+    //Logic taken from experiment 4
+    let label = createP()
+    label.html('World key: ')
+    label.class('world-key')
+    label.parent('canvas-container')
+
+    let input = createInput('xyzzy')
+    input.parent(label)
+    input.input(() => {
+        reflower(input.value())
+    })
+}
+
+function reflower(key) {
+    if (window.worldKeyChanged) {
+        window.worldKeyChanged(key)
+        console.log('key change')
+    }
     populateFlowerList()
 }
 
@@ -213,7 +239,25 @@ function palyBirdSounds() {
 //generates a list of flowers and stores it in global
 function populateFlowerList() {
     //parameters: x,y, growthRate, Root angle, Root depth, height, stem angle, stem depth,
-    randomSeed(2132131231)
+    colorList = [
+        [255, 0, 0],
+        [255, 50, 0],
+        [155, 50, 50],
+        [175, 55, 218],
+        [175, 184, 218],
+        [72, 241, 58],
+        [210, 241, 58],
+        [36, 156, 243],
+        [205, 178, 243],
+        [205, 178, 60],
+        [101, 10, 60],
+        [101, 84, 74],
+        [226, 84, 74],
+        [226, 188, 74],
+        [70, 6, 74],
+        [70, 31, 13],
+    ]
+
     flowerList = [
         new Plant(
             250,
@@ -224,7 +268,7 @@ function populateFlowerList() {
             windowHeight * random(0.02, 0.4),
             PI / 2,
             0,
-            [255, 0, 0],
+            random(colorList),
             4,
             20
         ),
@@ -237,7 +281,7 @@ function populateFlowerList() {
             windowHeight * random(0.02, 0.4),
             PI / 2,
             0,
-            [255, 50, 0],
+            random(colorList),
             11,
             20
         ),
@@ -250,7 +294,7 @@ function populateFlowerList() {
             windowHeight * random(0.02, 0.4),
             PI / 2,
             0,
-            [255, 0, 50],
+            random(colorList),
             6,
             20
         ),
@@ -263,7 +307,7 @@ function populateFlowerList() {
             windowHeight * random(0.02, 0.4),
             PI / 2,
             0,
-            [155, 50, 50],
+            random(colorList),
             8,
             20
         ),

@@ -24,6 +24,18 @@
     color: white;
 }
 
+.world-key {
+    position: absolute;
+    top: 40px;
+    right: 10px;
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.85);
+    padding: 6px 8px;
+    border-radius: 6px;
+    font-family: sans-serif;
+    border: 1px solid black;
+}
+
 /* https://www.w3schools.com/css/css_image_transparency.asp */
 .weather-btn {
     opacity: 0.5;
