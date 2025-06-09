@@ -59,7 +59,6 @@ class Stem {
         } else if (!this.hasBranched && this.depth < MAX_STEM) {
             //console.log('I am branching')
             this.hasBranched = true
-            console.log(this.height)
             const NUM_BRANCHES = floor(random(2, 5))
             const END_X = this.x + cos(this.angle) * this.length
             const END_Y = this.y - sin(this.angle) * this.length
