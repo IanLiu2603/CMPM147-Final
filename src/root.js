@@ -28,7 +28,7 @@ class Root {
         this.depth = depth
         this.hasBranched = false
         this.branches = []
-        this.maxLength = depth <= 1 ? random(5, 10) : random(20, 40)
+        this.maxLength = depth <= 1 ? random(2, 5) : random(20, 40)
     }
 
     grow() {
@@ -43,6 +43,9 @@ class Root {
             const NUM_BRANCHES = floor(random(2, 5))
             const END_X = this.x + cos(this.angle) * this.length
             const END_Y = this.y + sin(this.angle) * this.length
+            if (END_Y < windowHeight * 0.85) {
+                return
+            }
             for (let i = 0; i < NUM_BRANCHES; i++) {
                 const NEW_ANGLE = this.angle + random(-PI / 6, PI / 6)
                 this.branches.push(
@@ -68,7 +71,7 @@ class Root {
         const END_X = this.x + cos(this.angle) * this.length
         const END_Y = this.y + sin(this.angle) * this.length
         stroke(80, 50, 20)
-        strokeWeight(map(MAX_DEPTH - this.depth, 0, 4, 0.5, 2))
+        strokeWeight(map(MAX_DEPTH - this.depth, 0, MAX_DEPTH, 0.5, 2))
         line(this.x, this.y, END_X, END_Y)
 
         for (let branch of this.branches) {
