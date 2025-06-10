@@ -262,7 +262,7 @@ function populateFlowerList() {
         new Plant(
             250,
             windowHeight * 0.85,
-            random(1, 2),
+            random(.5, 2),
             PI / 2,
             0,
             windowHeight * random(0.05, 0.25),
@@ -275,7 +275,7 @@ function populateFlowerList() {
         new Plant(
             500,
             windowHeight * 0.85,
-            random(1, 2),
+            random(.5, 2),
             PI / 2,
             0,
             windowHeight * random(0.05, 0.25),
@@ -288,7 +288,7 @@ function populateFlowerList() {
         new Plant(
             750,
             windowHeight * 0.85,
-            random(1, 2),
+            random(.5, 2),
             PI / 2,
             0,
             windowHeight * random(0.05, 0.25),
@@ -301,7 +301,7 @@ function populateFlowerList() {
         new Plant(
             1000,
             windowHeight * 0.85,
-            random(1, 2),
+            random(.5, 2),
             PI / 2,
             0,
             windowHeight * random(0.05, 0.25),
@@ -341,7 +341,7 @@ function mousePressed() {
         let newPlant = new Plant(
             mouseX,
             windowHeight * 0.85,
-            random(1, 2),
+            random(.5, 2),
             PI / 2,
             0,
             windowHeight * random(0.05, 0.25),
@@ -450,6 +450,7 @@ window.fastforward = function () {
         flower.fastForward()
     }
     console.log('ff')
+    deltaTime = defaultTime * 5 
 }
 
 window.rewind = function () {
@@ -458,6 +459,7 @@ window.rewind = function () {
     }
     console.log('rewind')
     playing = 'rw'
+    deltaTime = -defaultTime 
 }
 
 // from ChatGPT
