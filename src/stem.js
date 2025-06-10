@@ -83,6 +83,23 @@ class Stem {
             for (let branch of this.branches) {
                 branch.grow()
             }
+
+            // Regenerate flower only on max-depth stems
+            if (
+                this.depth === MAX_STEM &&
+                this.flower === null &&
+                this.length >= this.maxLength
+            ) {
+                const END_X = this.x + cos(this.angle) * this.length
+                const END_Y = this.y - sin(this.angle) * this.length
+                this.flower = new Flower(
+                    END_X,
+                    END_Y,
+                    this.flower_size,
+                    this.num_petals,
+                    this.flower_color
+                )
+            }
         }
     }
 
@@ -128,7 +145,7 @@ class Stem {
             this.length += this.growth_rate
         }
 
-        if (this.length < 0) {
+        if (this.length <= 0) {
             this.length = 0
             this.branches = []
             this.hasBranched = false
@@ -136,8 +153,8 @@ class Stem {
     }
 
     resume() {
-        if (this.growth_rate > this.original_growth_rate) {
-            this.growth_rate = this.original_growth_rate
+        if (this.growth_rate !== this.original_growth_rate) {
+            this.growth_rate = abs(this.original_growth_rate)
         }
 
         if (this.flower) {
