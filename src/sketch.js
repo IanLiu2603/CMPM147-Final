@@ -450,6 +450,7 @@ window.fastforward = function () {
         flower.fastForward()
     }
     console.log('ff')
+    deltaTime = defaultTime * 5 
 }
 
 window.rewind = function () {
@@ -458,6 +459,7 @@ window.rewind = function () {
     }
     console.log('rewind')
     playing = 'rw'
+    deltaTime = -defaultTime 
 }
 
 // from ChatGPT

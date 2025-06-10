@@ -279,9 +279,16 @@ class Background {
         for (let cloud of this.clouds) {
             // Move clouds
             if (!paused) {
-                cloud.x += cloud.speed
-                if (cloud.x > width + cloud.size) {
-                    cloud.x = -cloud.size
+                if (deltaTime >= 0) {
+                    cloud.x += cloud.speed
+                    if (cloud.x > width + cloud.size) {
+                        cloud.x = -cloud.size
+                    }
+                } else {
+                    cloud.x -= cloud.speed
+                    if (cloud.x < -cloud.size) {
+                        cloud.x = width + cloud.size
+                    }
                 }
             }
 
@@ -304,10 +311,18 @@ class Background {
             for (let star of this.stars) {
                 // Move stars
                 if (!this.paused) {
-                    star.x -= star.speed
-                    if (star.x < -5) {
-                        star.x = width + 5
-                        star.y = random(0, height * 0.6)
+                    if (deltaTime >= 0) {
+                        star.x -= star.speed
+                        if (star.x < -5) {
+                            star.x = width + 5
+                            star.y = random(0, height * 0.6)
+                        }
+                    } else {
+                        star.x += star.speed
+                        if (star.x > width + 5) {
+                            star.x = -5
+                            star.y = random(0, height * 0.6)
+                        }
                     }
                 }
 
