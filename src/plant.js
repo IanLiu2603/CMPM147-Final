@@ -75,7 +75,6 @@ class Plant {
         }
         if (this.root) {
             this.root.reverseGrow()
-            this.root.grow()
         }
     }
 
@@ -89,19 +88,20 @@ class Plant {
     }
 
     fastForward() {
-        //console.log("Plant is ffing")
         if (this.stem) {
-            //console.log("Plant if stem statement")
             this.stem.fastForward()
+        }
+        if (this.root) {
+            this.root.fastForward()
         }
     }
 
     draw() {
-        if (this.stem) {
-            this.stem.draw()
-        }
         if (this.root) {
             this.root.draw()
+        }
+        if (this.stem) {
+            this.stem.draw()
         }
     }
 }

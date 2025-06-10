@@ -158,13 +158,9 @@ function drawFlowerScreen() {
         flower.draw()
         if (!paused) {
             if (playing === 'play') {
-                flower.resume()
                 flower.grow()
             } else if (playing === 'rw') {
                 flower.reverseGrow()
-            } else if (playing === 'ff') {
-                flower.fastForward()
-                flower.grow()
             }
         }
         // if (flower.type === 'circle') {
@@ -268,7 +264,7 @@ function populateFlowerList() {
             windowHeight * 0.85,
             random(1, 2),
             PI / 2,
-            random(1, 5),
+            0,
             windowHeight * random(0.05, 0.25),
             PI / 2,
             0,
@@ -347,7 +343,7 @@ function mousePressed() {
             windowHeight * 0.85,
             random(1, 2),
             PI / 2,
-            random(1, 5),
+            0,
             windowHeight * random(0.05, 0.25),
             PI / 2,
             0,
@@ -427,6 +423,9 @@ window.resume = function () {
     if (gameState === 'start') {
         return
     }
+    for (let flower of plantList) {
+        flower.resume()
+    }
     console.log('resume')
     //Background
     backgroundSystem.resume()
@@ -447,8 +446,10 @@ window.fastforward = function () {
     if (gameState === 'start') {
         return
     }
+    for (let flower of plantList) {
+        flower.fastForward()
+    }
     console.log('ff')
-    playing = 'ff'
 }
 
 window.rewind = function () {
