@@ -6,6 +6,7 @@
  */
 
 const MAX_STEM = 2
+const STEM_COLORS = [[34, 139, 34],[50, 205, 50],[128, 128, 0],[46, 139, 87],[127, 255, 0]]
 
 class Stem {
     constructor(
@@ -32,6 +33,7 @@ class Stem {
         this.flower_color = flowerColor
         this.num_petals = numPetals
         this.flower_size = flowerSize
+        this.stem_color = random(STEM_COLORS)
         if (this.depth === MAX_STEM) {
             this.flower = new Flower(
                 x,
@@ -179,7 +181,8 @@ class Stem {
     draw() {
         const END_X = this.x + cos(this.angle) * this.length
         const END_Y = this.y - sin(this.angle) * this.length
-        stroke(0, 255, 0)
+        stroke(this.stem_color[0], this.stem_color[1], this.stem_color[2]);
+        // stroke(0, 255, 0)
         strokeWeight(map(this.depth, 0, MAX_STEM, 5, 2))
         line(this.x, this.y, END_X, END_Y)
 
